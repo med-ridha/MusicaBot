@@ -83,6 +83,10 @@ bot.on('message', message => {
                     }
                     break;
                 case 'zid':
+                    if (!args[1]) {
+                        message.channel.send("zidha el  name 3asba");
+                        return;
+                    }
                     var server = servers[message.guild.id];
                     search(message2.substring("+zid".length), function(err, r) {
 
@@ -106,7 +110,7 @@ bot.on('message', message => {
 
 
                     if (!args[1]) {
-                        message.channel.send("zidha el  link 3asba");
+                        message.channel.send("zidha el  name 3asba");
                         return;
                     }
                     if (!message.member.voice.channel) {
