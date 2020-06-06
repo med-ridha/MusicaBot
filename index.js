@@ -26,45 +26,16 @@ function play(connection, message) {
 
     });
 }
-
-function searchSong(songname, message) {
-
-    search(songname, function(err, r) {
-        var server = servers[message.guild.id];
-        if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
-        message.channel.send('searching ' + songname);
-        let videos = r.videos.slice(0, 1);
-
-        try {
-
-            message.channel.send(' ' + videos[0].title);
-            message.channel.send(' ' + videos[0].url);
-            url = videos[0].url;
-            server.queue.push(url);
-            console.log(server);
-
-
-        } catch (ex) { console.log(ex); }
-
-    });
-}
 bot.on('message', message => {
 
     var message2 = message.toString().replace(/\s+/g, ' ');
 
-    var message3 = message2.substring(1, message.length);
+
 
     let args = message2.substring(prefix.length).split(" ");
 
-
-
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
-            if (args[1]) {
-                songname = message3.substring(args[0].length + 1, message.length);
-            }
-            console.log(songname);
-
             switch (args[0]) {
                 case 'o5rejnayek':
                     var server = servers[message.guild.id];
@@ -112,26 +83,31 @@ bot.on('message', message => {
                     }
                     break;
                 case 'zid':
-
                     if (!args[1]) {
                         message.channel.send("zidha el  name 3asba");
                         return;
                     }
                     var server = servers[message.guild.id];
-                    searchSong(songname, message);
+                    search(message2.substring("+zid".length), function(err, r) {
+
+                        if (err) message.channel.send('tnekna tnekna ya zebi tnekna ! ');
+                        message.channel.send('searching ' + message2.substring("+zid".length));
+                        let videos = r.videos.slice(0, 10);
+                        /*for (var i in videos) {
+                            console.log(videos[i].title + '\n');
+                        }*/
+                        try {
+                            message.channel.send(' ' + videos[0].title);
+                            message.channel.send(' ' + videos[0].url);
+                            url = videos[0].url;
+                            server.queue.push(url);
+                            console.log(server);
+                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
+                    })
+
                     break;
                 case 'od5elnayek':
-                    var server = servers[message.guild.id];
-                    try {
-                        if (!message.guild.voice.connection) {
-                            while (server.queue[0]) {
-                                server.queue.shift();
-                            }
-                        }
-                    } catch (ex) {
 
-                        message.channel.send('tnekna ya zebi tnekna');
-                    }
 
                     if (!args[1]) {
                         message.channel.send("zidha el  name 3asba");
@@ -146,13 +122,30 @@ bot.on('message', message => {
                     }
                     var server = servers[message.guild.id];
 
-                    searchSong(songname, message);
+                    search(message2.substring("+od5elnayek".length), function(err, r) {
 
-                    if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                        if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
+                        message.channel.send('searching ' + message2.substring("+od5elnayek".length));
+                        let videos = r.videos.slice(0, 10);
+                        /*for (var i in videos) {
+                            console.log(videos[i].title + '\n');
+                        }*/
+                        try {
 
-                        play(connection, message);
-                        console.log(server);
-                    })
+                            message.channel.send(' ' + videos[0].title);
+                            message.channel.send(' ' + videos[0].url);
+                            url = videos[0].url;
+                            server.queue.push(url);
+
+                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+
+                                play(connection, message);
+                                console.log(server);
+                            })
+                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
+                    });
+
+
 
 
                     break;
