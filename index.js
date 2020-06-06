@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const ytdl = require('ytdl-core');
 const search = require('yt-search');
-
+var iamin;
 var url;
 const prefix = '+';
 var servers = {};
@@ -21,6 +21,7 @@ function play(connection, message) {
             play(connection, message);
         } else {
             message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
+            iamin === 'NO';
             message.guild.voice.connection.disconnect();
         }
 
@@ -53,6 +54,7 @@ bot.on('message', message => {
                                 server.queue.shift();
                             }
                             message.channel.send('hani 5arej ya zebi! ');
+                            iamin === 'NO';
                             message.guild.voice.connection.disconnect();
 
                         } else {
@@ -142,7 +144,7 @@ bot.on('message', message => {
                     /* while (server.queue[0]) {
                          server.queue.shift();
                      }*/
-                    message.channel.send("clearing queue");
+                    //message.channel.send("clearing queue");
 
                     search(songname, function(err, r) {
 
@@ -159,12 +161,12 @@ bot.on('message', message => {
                             url = videos[0].url;
                             server.queue.push(url);
 
-                            if (message.member.voice.connection) {
+                            if (iamin === 'yes') {
                                 return;
                             }
 
                             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-
+                                iamin = 'yes'
                                 play(connection, message);
                                 console.log(server);
                             })
