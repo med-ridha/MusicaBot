@@ -128,7 +128,7 @@ bot.on('message', message => {
                     }
                     var server = servers[message.guild.id];
                     while (server.queue[0]) {
-                        server.queue.push();
+                        server.queue.shift();
                     }
                     message.channel.send("clearing queue");
 
