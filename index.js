@@ -12,8 +12,8 @@ bot.on('ready', () => {
 
 function play(connection, message) {
     var server = servers[message.guild.id];
-    if (!server.queue[1])
-        dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
+
+    dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
 
     dispatcher.on("finish", () => {
         server.queue.shift();
