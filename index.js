@@ -108,7 +108,7 @@ bot.on('message', message => {
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(server);
-                        } catch (ex) { message.channel.send(' ' + ex); }
+                        } catch (ex) { message.channel.send('something went wrong plz try again :  ' + ex); }
                     })
 
                     break;
