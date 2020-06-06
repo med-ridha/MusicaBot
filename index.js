@@ -88,23 +88,24 @@ bot.on('message', message => {
                         return;
                     }
                     var server = servers[message.guild.id];
-                    search(message2.substring("+zid".length), function(err, r) {
+                    do {
+                        search(message2.substring("+zid".length), function(err, r) {
 
-                        if (err) message.channel.send('tnekna tnekna ya zebi tnekna ! ');
-                        message.channel.send('searching ' + message2.substring("+zid".length));
-                        let videos = r.videos.slice(0, 10);
-                        /*for (var i in videos) {
-                            console.log(videos[i].title + '\n');
-                        }*/
-                        try {
-                            message.channel.send(' ' + videos[0].title);
-                            message.channel.send(' ' + videos[0].url);
-                            url = videos[0].url;
-                            server.queue.push(url);
-                            console.log(server);
-                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
-                    })
-
+                            if (err) message.channel.send('tnekna tnekna ya zebi tnekna ! ');
+                            message.channel.send('searching ' + message2.substring("+zid".length));
+                            let videos = r.videos.slice(0, 10);
+                            /*for (var i in videos) {
+                                console.log(videos[i].title + '\n');
+                            }*/
+                            try {
+                                message.channel.send(' ' + videos[0].title);
+                                message.channel.send(' ' + videos[0].url);
+                                url = videos[0].url;
+                                server.queue.push(url);
+                                console.log(server);
+                            } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
+                        })
+                    } while (videos[0]);
                     break;
                 case 'od5elnayek':
                     var server = servers[message.guild.id];
@@ -131,30 +132,31 @@ bot.on('message', message => {
                         queue: []
                     }
                     var server = servers[message.guild.id];
+                    do {
+                        search(message2.substring("+od5elnayek".length), function(err, r) {
 
-                    search(message2.substring("+od5elnayek".length), function(err, r) {
+                            if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
+                            message.channel.send('searching ' + message2.substring("+od5elnayek".length));
+                            let videos = r.videos.slice(0, 10);
+                            for (var i in videos) {
+                                console.log(videos[i].title + '\n');
+                            }
+                            try {
 
-                        if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
-                        message.channel.send('searching ' + message2.substring("+od5elnayek".length));
-                        let videos = r.videos.slice(0, 10);
-                        for (var i in videos) {
-                            console.log(videos[i].title + '\n');
-                        }
-                        try {
+                                message.channel.send(' ' + videos[0].title);
+                                message.channel.send(' ' + videos[0].url);
+                                url = videos[0].url;
+                                server.queue.push(url);
 
-                            message.channel.send(' ' + videos[0].title);
-                            message.channel.send(' ' + videos[0].url);
-                            url = videos[0].url;
-                            server.queue.push(url);
+                                if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
 
-                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                                    play(connection, message);
+                                    console.log(server);
+                                })
+                            } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
 
-                                play(connection, message);
-                                console.log(server);
-                            })
-                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
-                    });
-
+                        });
+                    } while (videos);
 
 
 
