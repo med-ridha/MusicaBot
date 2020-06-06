@@ -107,7 +107,21 @@ bot.on('message', message => {
 
                     break;
                 case 'od5elnayek':
+                    var server = servers[message.guild.id];
+                    try {
+                        if (!message.guild.voice.connection) {
+                            while (server.queue[0]) {
+                                server.queue.shift();
+                            }
 
+                        } else {
+
+                            message.channel.send('aya hani da5el');
+                        }
+                    } catch (ex) {
+
+                        message.channel.send('tnekna ya zebi tnekna');
+                    }
 
                     if (!args[1]) {
                         message.channel.send("zidha el  name 3asba");
