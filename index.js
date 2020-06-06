@@ -51,7 +51,7 @@ bot.on('message', message => {
 
     var message2 = message.toString().replace(/\s+/g, ' ');
 
-
+    var message3 = message2.substring(1, message.length);
 
     let args = message2.substring(prefix.length).split(" ");
 
@@ -60,7 +60,7 @@ bot.on('message', message => {
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             if (args[1]) {
-                songname = message2.substring(args[1].length + 1, message.length);
+                songname = message3.substring(args[1].length, message3.length);
             }
             console.log(songname);
             return;
