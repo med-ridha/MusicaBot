@@ -34,7 +34,9 @@ bot.on('message', message => {
     var songname;
 
     let args = message2.substring(prefix.length).split(" ");
-
+    if (!message.member.voice.connection) {
+        iamin = 'NO';
+    }
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             if (args[1]) {
