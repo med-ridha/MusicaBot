@@ -139,9 +139,9 @@ bot.on('message', message => {
                         queue: []
                     }
                     var server = servers[message.guild.id];
-                    while (server.queue[0]) {
-                        server.queue.shift();
-                    }
+                    /* while (server.queue[0]) {
+                         server.queue.shift();
+                     }*/
                     message.channel.send("clearing queue");
 
                     search(songname, function(err, r) {
