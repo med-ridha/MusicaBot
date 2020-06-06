@@ -27,7 +27,7 @@ function play(connection, message) {
     });
 }
 
-function searchSong(songname) {
+function searchSong(songname, message) {
     var server = servers[message.guild.id];
     search(songname, function(err, r) {
 
@@ -117,7 +117,7 @@ bot.on('message', message => {
                         return;
                     }
                     var server = servers[message.guild.id];
-                    searchSong(songname);
+                    searchSong(songname, message);
                     break;
                 case 'od5elnayek':
                     var server = servers[message.guild.id];
@@ -145,7 +145,7 @@ bot.on('message', message => {
                     }
 
 
-                    searchSong(songname);
+                    searchSong(songname, message);
 
                     if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
 
