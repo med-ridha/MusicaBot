@@ -28,9 +28,9 @@ function play(connection, message) {
 }
 
 function searchSong(songname, message) {
-    var server = servers[message.guild.id];
-    search(songname, function(err, r) {
 
+    search(songname, function(err, r) {
+        var server = servers[message.guild.id];
         if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
         message.channel.send('searching ' + songname);
         let videos = r.videos.slice(0, 1);
@@ -143,7 +143,7 @@ bot.on('message', message => {
                     if (!servers[message.guild.id]) servers[message.guild.id] = {
                         queue: []
                     }
-
+                    var server = servers[message.guild.id];
 
                     searchSong(songname, message);
 
