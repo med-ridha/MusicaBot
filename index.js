@@ -113,10 +113,6 @@ bot.on('message', message => {
                             while (server.queue[0]) {
                                 server.queue.shift();
                             }
-
-                        } else {
-
-                            message.channel.send('aya hani da5el');
                         }
                     } catch (ex) {
 
