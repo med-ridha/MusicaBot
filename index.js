@@ -34,8 +34,15 @@ bot.on('message', message => {
     var songname;
 
     let args = message2.substring(prefix.length).split(" ");
+    if (!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+    }
+    var server = servers[message.guild.id];
     if (!message.member.voice.connection) {
         iamin = 'NO';
+        while (server.queue[0]) {
+            server.queue.shift();
+        }
     }
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
