@@ -156,7 +156,7 @@ bot.on('message', message => {
                             } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
 
                         });
-                    } while (videos);
+                    } while (videos[0]);
 
 
 
