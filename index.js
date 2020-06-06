@@ -21,7 +21,7 @@ function play(connection, message) {
             play(connection, message);
         } else {
             message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
-            iamin === 'NO';
+            iamin = 'NO';
             message.guild.voice.connection.disconnect();
         }
 
@@ -42,6 +42,7 @@ bot.on('message', message => {
             }
             switch (args[0]) {
                 case 'o5rejnayek':
+                    iamin = 'NO';
                     if (!message.member.voice.channel) {
                         message.channel.send("od5el el room ya3ik 3asba!");
                         return;
@@ -54,7 +55,7 @@ bot.on('message', message => {
                                 server.queue.shift();
                             }
                             message.channel.send('hani 5arej ya zebi! ');
-                            iamin === 'NO';
+
                             message.guild.voice.connection.disconnect();
 
                         } else {
@@ -160,7 +161,7 @@ bot.on('message', message => {
                             message.channel.send(' ' + videos[0].url);
                             url = videos[0].url;
                             server.queue.push(url);
-
+                            console.log(iamin);
                             if (iamin === 'yes') {
                                 return;
                             }
