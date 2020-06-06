@@ -113,7 +113,18 @@ bot.on('message', message => {
 
                     break;
                 case 'od5elnayek':
+                    var server = servers[message.guild.id];
 
+                    try {
+                        if (!message.guild.voice.connection) {
+                            while (server.queue[0]) {
+                                server.queue.shift();
+                            }
+                        }
+                    } catch (ex) {
+
+                        console.log(ex);
+                    }
 
                     if (!args[1]) {
                         message.channel.send("zidha el  name 3asba");
