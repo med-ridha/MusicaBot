@@ -41,6 +41,10 @@ bot.on('message', message => {
             }
             switch (args[0]) {
                 case 'o5rejnayek':
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room ya3ik 3asba!");
+                        return;
+                    }
                     var server = servers[message.guild.id];
 
                     try {
@@ -61,6 +65,10 @@ bot.on('message', message => {
                     }
                     break;
                 case 'osket3asba':
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room ya3ik 3asba!");
+                        return;
+                    }
                     var server = servers[message.guild.id];
                     try {
                         if (message.guild.voice.connection) {
@@ -86,6 +94,10 @@ bot.on('message', message => {
                     }
                     break;
                 case 'zid':
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room ya3ik 3asba!");
+                        return;
+                    }
                     if (!args[1]) {
                         message.channel.send("zidha el  name 3asba");
                         return;
@@ -160,7 +172,10 @@ bot.on('message', message => {
 
                     break;
                 case 'osketla7dha':
-
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room ya3ik 3asba!");
+                        return;
+                    }
                     try {
                         if (message.guild.voice.connection) {
                             if (dispatcher) dispatcher.pause(true);
@@ -176,7 +191,10 @@ bot.on('message', message => {
                     break;
 
                 case 'kamel':
-
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room ya3ik 3asba!");
+                        return;
+                    }
                     try {
                         if (message.guild.voice.connection) {
                             if (dispatcher) dispatcher.resume();
