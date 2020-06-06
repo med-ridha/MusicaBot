@@ -115,9 +115,9 @@ bot.on('message', message => {
                         if (err) message.channel.send('tnekna tnekna ya zebi tnekna ! ');
                         message.channel.send('searching ' + songname);
                         let videos = r.videos.slice(0, 10);
-                        /*for (var i in videos) {
-                            console.log(videos[i].title + '\n');
-                        }*/
+                        /* for (var i in videos) {
+                             console.log(videos[i].title + '\n');
+                         }*/
                         try {
                             message.channel.send(' ' + videos[0].title);
                             message.channel.send(' ' + videos[0].url);
@@ -128,7 +128,7 @@ bot.on('message', message => {
                     })
 
                     break;
-                case 'od5elnayek':
+                case '7ot':
 
 
                     if (!args[1]) {
@@ -163,9 +163,9 @@ bot.on('message', message => {
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(iamin);
-                            /* if (iamin === 'yes') {
-                                 return;
-                             }*/
+                            if (iamin === 'yes') {
+                                return;
+                            }
 
                             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
                                 iamin = 'yes'
@@ -215,6 +215,9 @@ bot.on('message', message => {
 
                     }
 
+                    break;
+                case 'fixjoinerror':
+                    iamin = 'NO';
                     break;
                 default:
                     message.channel.send('mafhemt 7ata 3asba nayek!');
