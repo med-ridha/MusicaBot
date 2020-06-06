@@ -114,12 +114,9 @@ bot.on('message', message => {
                             message.channel.send(' ' + videos[0].url);
                             url = videos[0].url;
                             server.queue.push(url);
-                            if (message.guild.voice.connection && dispatcher) {
-                                console.log(server);
-                                return;
-                            }
-                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
 
+                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                                if (dispatcher) return;
                                 play(connection, message);
                                 console.log(server);
                             })
