@@ -218,6 +218,13 @@ bot.on('message', message => {
                     break;
                 case 'fixjoinerror':
                     iamin = 'NO';
+                    if (!servers[message.guild.id]) servers[message.guild.id] = {
+                        queue: []
+                    }
+                    var server = servers[message.guild.id];
+                    while (server.queue[0]) {
+                        server.queue.shift();
+                    }
                     break;
                 default:
                     message.channel.send('mafhemt 7ata 3asba nayek!');
