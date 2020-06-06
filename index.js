@@ -113,18 +113,7 @@ bot.on('message', message => {
 
                     break;
                 case 'od5elnayek':
-                    var server = servers[message.guild.id];
 
-                    try {
-                        if (!message.guild.voice.connection) {
-                            while (server.queue[0]) {
-                                server.queue.shift();
-                            }
-                        }
-                    } catch (ex) {
-
-                        console.log(ex);
-                    }
 
                     if (!args[1]) {
                         message.channel.send("zidha el  name 3asba");
@@ -138,11 +127,15 @@ bot.on('message', message => {
                         queue: []
                     }
                     var server = servers[message.guild.id];
+                    while (server.queue[0]) {
+                        server.queue.push();
+                    }
+                    message.channel.send("clearing queue");
 
                     search(songname, function(err, r) {
 
                         if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
-                        message.channel.send('searching ' + songname);
+                        message.channel.send('playing ' + songname);
                         let videos = r.videos.slice(0, 10);
                         /*for (var i in videos) {
                             console.log(videos[i].title + '\n');
@@ -159,7 +152,7 @@ bot.on('message', message => {
                                 play(connection, message);
                                 console.log(server);
                             })
-                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
+                        } catch (ex) { message.channel.send('something went wrong please try again ' + ex); }
                     });
 
 
