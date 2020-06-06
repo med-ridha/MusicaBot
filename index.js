@@ -63,7 +63,7 @@ bot.on('message', message => {
                 songname = message3.substring(args[0].length + 1, message.length);
             }
             console.log(songname);
-            return;
+
             switch (args[0]) {
                 case 'o5rejnayek':
                     var server = servers[message.guild.id];
@@ -143,9 +143,9 @@ bot.on('message', message => {
                     if (!servers[message.guild.id]) servers[message.guild.id] = {
                         queue: []
                     }
-                    var server = servers[message.guild.id];
 
 
+                    searchSong(songname);
 
                     if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
 
