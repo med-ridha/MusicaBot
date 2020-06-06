@@ -105,7 +105,7 @@ bot.on('message', message => {
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(server);
-                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
+                        } catch (ex) { message.channel.send(' ' + ex); }
                     })
 
                     break;
