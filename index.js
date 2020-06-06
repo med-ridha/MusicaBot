@@ -43,7 +43,7 @@ function searchSong(songname, message) {
             server.queue.push(url);
 
 
-        } catch (ex) { searchSong(songname); }
+        } catch (ex) { console.log(ex); }
 
     });
 }
