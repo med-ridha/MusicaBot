@@ -82,7 +82,30 @@ bot.on('message', message => {
                         message.channel.send('ya ' + args[1] + ' ya mnayek!');
                     }
                     break;
+                case 'zid':
+                    if (!args[1]) {
+                        message.channel.send("zidha el  name 3asba");
+                        return;
+                    }
+                    var server = servers[message.guild.id];
+                    search(message2.substring("+zid".length), function(err, r) {
 
+                        if (err) message.channel.send('tnekna tnekna ya zebi tnekna ! ');
+                        message.channel.send('searching ' + message2.substring("+zid".length));
+                        let videos = r.videos.slice(0, 10);
+                        /*for (var i in videos) {
+                            console.log(videos[i].title + '\n');
+                        }*/
+                        try {
+                            message.channel.send(' ' + videos[0].title);
+                            message.channel.send(' ' + videos[0].url);
+                            url = videos[0].url;
+                            server.queue.push(url);
+                            console.log(server);
+                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
+                    })
+
+                    break;
                 case 'od5elnayek':
 
 
@@ -104,7 +127,6 @@ bot.on('message', message => {
                         if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
                         message.channel.send('searching ' + message2.substring("+od5elnayek".length));
                         let videos = r.videos.slice(0, 10);
-                        if (!videos[0]) message.channel.send('ma9it 7ata 3asba, try again!');
                         for (var i in videos) {
                             console.log(videos[i].title + '\n');
                         }
@@ -116,11 +138,11 @@ bot.on('message', message => {
                             server.queue.push(url);
 
                             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-                                if (dispatcher) return;
+
                                 play(connection, message);
                                 console.log(server);
                             })
-                        } catch (ex) { message.channel.send(ex); }
+                        } catch (ex) { message.channel.send('ma9it 7ata 3asba ya zebi !'); }
                     });
 
 
@@ -149,7 +171,7 @@ bot.on('message', message => {
                         if (message.guild.voice.connection) {
                             if (dispatcher) dispatcher.resume();
                         } else {
-                            message.channel.send('ma3andi mankamel!');
+                            message.channel.send(':/');
 
                         }
                     } catch (ex) {
