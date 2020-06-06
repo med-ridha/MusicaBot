@@ -90,6 +90,9 @@ bot.on('message', message => {
                         message.channel.send("zidha el  name 3asba");
                         return;
                     }
+                    if (!servers[message.guild.id]) servers[message.guild.id] = {
+                        queue: []
+                    }
                     var server = servers[message.guild.id];
                     search(songname, function(err, r) {
 
