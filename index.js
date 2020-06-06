@@ -41,6 +41,7 @@ function searchSong(songname, message) {
             message.channel.send(' ' + videos[0].url);
             url = videos[0].url;
             server.queue.push(url);
+            console.log(server);
 
 
         } catch (ex) { console.log(ex); }
