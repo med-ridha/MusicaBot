@@ -159,6 +159,10 @@ bot.on('message', message => {
                             url = videos[0].url;
                             server.queue.push(url);
 
+                            if (message.member.voice.connection) {
+                                return;
+                            }
+
                             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
 
                                 play(connection, message);
