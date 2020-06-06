@@ -30,12 +30,15 @@ bot.on('message', message => {
 
     var message2 = message.toString().replace(/\s+/g, ' ');
 
-
+    var songname;
 
     let args = message2.substring(prefix.length).split(" ");
 
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
+            if (args[1]) {
+                songname = message2.substring(arg[0].length + 1, message.length);
+            }
             switch (args[0]) {
                 case 'o5rejnayek':
                     var server = servers[message.guild.id];
@@ -88,10 +91,10 @@ bot.on('message', message => {
                         return;
                     }
                     var server = servers[message.guild.id];
-                    search(message2.substring("+zid".length), function(err, r) {
+                    search(songname, function(err, r) {
 
                         if (err) message.channel.send('tnekna tnekna ya zebi tnekna ! ');
-                        message.channel.send('searching ' + message2.substring("+zid".length));
+                        message.channel.send('searching ' + songname);
                         let videos = r.videos.slice(0, 10);
                         /*for (var i in videos) {
                             console.log(videos[i].title + '\n');
@@ -122,10 +125,10 @@ bot.on('message', message => {
                     }
                     var server = servers[message.guild.id];
 
-                    search(message2.substring("+od5elnayek".length), function(err, r) {
+                    search(songname, function(err, r) {
 
                         if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
-                        message.channel.send('searching ' + message2.substring("+od5elnayek".length));
+                        message.channel.send('searching ' + songname);
                         let videos = r.videos.slice(0, 10);
                         /*for (var i in videos) {
                             console.log(videos[i].title + '\n');
