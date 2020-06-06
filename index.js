@@ -12,7 +12,8 @@ bot.on('ready', () => {
 
 function play(connection, message) {
     var server = servers[message.guild.id];
-    dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
+    if (!server.queue[1])
+        dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
 
     dispatcher.on("finish", () => {
         server.queue.shift();
@@ -34,16 +35,7 @@ bot.on('message', message => {
     var songname;
 
     let args = message2.substring(prefix.length).split(" ");
-    if (!servers[message.guild.id]) servers[message.guild.id] = {
-        queue: []
-    }
-    var server = servers[message.guild.id];
-    if (!message.member.voice.connection) {
-        iamin = 'NO';
-        while (server.queue[0]) {
-            server.queue.shift();
-        }
-    }
+
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             if (args[1]) {
@@ -171,9 +163,9 @@ bot.on('message', message => {
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(iamin);
-                            if (iamin === 'yes') {
-                                return;
-                            }
+                            /* if (iamin === 'yes') {
+                                 return;
+                             }*/
 
                             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
                                 iamin = 'yes'
