@@ -6,11 +6,12 @@ var iamin;
 var url;
 const prefix = '+';
 var servers = {};
+var currentsongname;
 bot.on('ready', () => {
     console.log('this bot is online');
 })
 
-function play(connection, message) {
+function play(connection, message, currentsongname) {
     var server = servers[message.guild.id];
 
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
@@ -19,9 +20,9 @@ function play(connection, message) {
         server.queue.shift();
 
         console.log(server);
-        message.channel.send('playing ' + server.queue[0]);
+        message.channel.send('playing ' + currentsongname);
         if (server.queue[0]) {
-            play(connection, message);
+            play(connection, message, currentsongname);
         } else {
             message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
             iamin = 'NO';
@@ -165,6 +166,7 @@ bot.on('message', message => {
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(iamin);
+                            currentsongname = videos[0].title;
                             if (iamin === 'yes') {
                                 message.channel.send('Queued ' + videos[0].title);
 
@@ -174,7 +176,7 @@ bot.on('message', message => {
                                 if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
                                     iamin = 'yes'
                                     message.channel.send('playing ' + videos[0].title);
-                                    play(connection, message);
+                                    play(connection, message, currentsongname);
                                     console.log(server);
                                 })
                             } catch (ex) { console.log(ex) }
