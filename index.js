@@ -161,18 +161,20 @@ bot.on('message', message => {
                         try {
 
 
-                            message.channel.send(' ' + videos[0].url);
+
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(iamin);
                             if (iamin === 'yes') {
                                 message.channel.send('Queued ' + videos[0].title);
+                                message.channel.send(' ' + videos[0].url);
                                 return;
                             }
                             try {
                                 if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
                                     iamin = 'yes'
                                     message.channel.send('playing ' + videos[0].title);
+                                    message.channel.send(' ' + videos[0].url);
                                     play(connection, message);
                                     console.log(server);
                                 })
