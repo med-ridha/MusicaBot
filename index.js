@@ -166,12 +166,13 @@ bot.on('message', message => {
                             if (iamin === 'yes') {
                                 return;
                             }
-
-                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-                                iamin = 'yes'
-                                play(connection, message);
-                                console.log(server);
-                            })
+                            try {
+                                if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                                    iamin = 'yes'
+                                    play(connection, message);
+                                    console.log(server);
+                                })
+                            } catch (ex) { console.log(ex) }
                         } catch (ex) { message.channel.send('something went wrong please try again ' + ex); }
                     });
 
