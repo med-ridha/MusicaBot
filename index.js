@@ -6,23 +6,23 @@ var iamin;
 var url;
 const prefix = '+';
 var servers = {};
-var currentsongname;
 bot.on('ready', () => {
     console.log('this bot is online');
 })
 
-function play(connection, message, currentsongname) {
+function play(connection, message) {
     var server = servers[message.guild.id];
+    var titles = servers[message.guild.id];
 
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
 
     dispatcher.on("finish", () => {
         server.queue.shift();
-
+        titles.queue.shift();
         console.log(server);
-        message.channel.send('playing ' + currentsongname);
+        message.channel.send('playing ' + titles.queue[0]);
         if (server.queue[0]) {
-            play(connection, message, currentsongname);
+            play(connection, message);
         } else {
             message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
             iamin = 'NO';
@@ -52,11 +52,15 @@ bot.on('message', message => {
                         return;
                     }
                     var server = servers[message.guild.id];
+                    var titles = servers[message.guild.id];
 
                     try {
                         if (message.guild.voice.connection) {
                             while (server.queue[0]) {
                                 server.queue.shift();
+                            }
+                            while (titles.queue[0]) {
+                                titles.queue.shift();
                             }
                             message.channel.send('hani 5arej ya zebi! ');
 
@@ -145,6 +149,7 @@ bot.on('message', message => {
                     if (!servers[message.guild.id]) servers[message.guild.id] = {
                         queue: []
                     }
+                    var titles = servers[message.guild.id];
                     var server = servers[message.guild.id];
                     /* while (server.queue[0]) {
                          server.queue.shift();
@@ -165,8 +170,9 @@ bot.on('message', message => {
 
                             url = videos[0].url;
                             server.queue.push(url);
+                            titles.queue.push(videos[0].title);
                             console.log(iamin);
-                            currentsongname = videos[0].title;
+
                             if (iamin === 'yes') {
                                 message.channel.send('Queued ' + videos[0].title);
 
@@ -176,7 +182,7 @@ bot.on('message', message => {
                                 if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
                                     iamin = 'yes'
                                     message.channel.send('playing ' + videos[0].title);
-                                    play(connection, message, currentsongname);
+                                    play(connection, message);
                                     console.log(server);
                                 })
                             } catch (ex) { console.log(ex) }
