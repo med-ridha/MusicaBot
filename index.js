@@ -17,7 +17,9 @@ function play(connection, message) {
 
     dispatcher.on("finish", () => {
         server.queue.shift();
+
         console.log(server);
+        message.channel.send('playing ' + server.queue[0]);
         if (server.queue[0]) {
             play(connection, message);
         } else {
@@ -158,17 +160,19 @@ bot.on('message', message => {
                         }*/
                         try {
 
-                            message.channel.send('found ' + videos[0].title);
+
                             message.channel.send(' ' + videos[0].url);
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(iamin);
                             if (iamin === 'yes') {
+                                message.channel.send('Queued ' + videos[0].title);
                                 return;
                             }
                             try {
                                 if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
                                     iamin = 'yes'
+                                    message.channel.send('playing ' + videos[0].title);
                                     play(connection, message);
                                     console.log(server);
                                 })
