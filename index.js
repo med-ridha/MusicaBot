@@ -97,37 +97,37 @@ bot.on('message', message => {
                         message.channel.send('ya ' + args[1] + ' ya mnayek!');
                     }
                     break;
-                case 'zid':
-                    if (!message.member.voice.channel) {
-                        message.channel.send("od5el el room ya3ik 3asba!");
-                        return;
-                    }
-                    if (!args[1]) {
-                        message.channel.send("zidha el  name 3asba");
-                        return;
-                    }
-                    if (!servers[message.guild.id]) servers[message.guild.id] = {
-                        queue: []
-                    }
-                    var server = servers[message.guild.id];
-                    search(songname, function(err, r) {
+                    /*case 'zid':
+                        if (!message.member.voice.channel) {
+                            message.channel.send("od5el el room ya3ik 3asba!");
+                            return;
+                        }
+                        if (!args[1]) {
+                            message.channel.send("zidha el  name 3asba");
+                            return;
+                        }
+                        if (!servers[message.guild.id]) servers[message.guild.id] = {
+                            queue: []
+                        }
+                        var server = servers[message.guild.id];
+                        search(songname, function(err, r) {
 
-                        if (err) message.channel.send('tnekna tnekna ya zebi tnekna ! ');
-                        message.channel.send('searching ' + songname);
-                        let videos = r.videos.slice(0, 10);
-                        /* for (var i in videos) {
-                             console.log(videos[i].title + '\n');
-                         }*/
-                        try {
-                            message.channel.send(' ' + videos[0].title);
-                            message.channel.send(' ' + videos[0].url);
-                            url = videos[0].url;
-                            server.queue.push(url);
-                            console.log(server);
-                        } catch (ex) { message.channel.send('something went wrong plz try again :  ' + ex); }
-                    })
+                            if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
+                            message.channel.send('searching ' + songname);
+                            let videos = r.videos.slice(0, 10);
+                            /* for (var i in videos) {
+                                 console.log(videos[i].title + '\n');
+                             }
+                            try {
+                                message.channel.send(' ' + videos[0].title);
+                                message.channel.send(' ' + videos[0].url);
+                                url = videos[0].url;
+                                server.queue.push(url);
+                                console.log(server);
+                            } catch (ex) { message.channel.send('something went wrong plz try again :  ' + ex); }
+                        })
 
-                    break;
+                        break;*/
                 case '7ot':
 
 
@@ -150,15 +150,15 @@ bot.on('message', message => {
 
                     search(songname, function(err, r) {
 
-                        if (err) message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
-                        message.channel.send('playing ' + songname);
+                        if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
+                        message.channel.send('searching ' + songname);
                         let videos = r.videos.slice(0, 10);
                         /*for (var i in videos) {
                             console.log(videos[i].title + '\n');
                         }*/
                         try {
 
-                            message.channel.send(' ' + videos[0].title);
+                            message.channel.send('found ' + videos[0].title);
                             message.channel.send(' ' + videos[0].url);
                             url = videos[0].url;
                             server.queue.push(url);
