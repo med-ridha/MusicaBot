@@ -12,15 +12,14 @@ bot.on('ready', () => {
 
 function play(connection, message) {
     var server = servers[message.guild.id];
-    var titles = servers[message.guild.id];
 
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
 
     dispatcher.on("finish", () => {
         server.queue.shift();
-        titles.queue.shift();
+
         console.log(server);
-        message.channel.send('playing ' + titles.queue[0]);
+        message.channel.send('playing ' + server.queue[0]);
         if (server.queue[0]) {
             play(connection, message);
         } else {
@@ -52,15 +51,11 @@ bot.on('message', message => {
                         return;
                     }
                     var server = servers[message.guild.id];
-                    var titles = servers[message.guild.id];
 
                     try {
                         if (message.guild.voice.connection) {
                             while (server.queue[0]) {
                                 server.queue.shift();
-                            }
-                            while (titles.queue[0]) {
-                                titles.queue.shift();
                             }
                             message.channel.send('hani 5arej ya zebi! ');
 
@@ -149,7 +144,6 @@ bot.on('message', message => {
                     if (!servers[message.guild.id]) servers[message.guild.id] = {
                         queue: []
                     }
-                    var titles = servers[message.guild.id];
                     var server = servers[message.guild.id];
                     /* while (server.queue[0]) {
                          server.queue.shift();
@@ -170,9 +164,7 @@ bot.on('message', message => {
 
                             url = videos[0].url;
                             server.queue.push(url);
-                            titles.queue.push(videos[0].title);
                             console.log(iamin);
-
                             if (iamin === 'yes') {
                                 message.channel.send('Queued ' + videos[0].title);
 
