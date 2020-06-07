@@ -19,7 +19,7 @@ function play(connection, message) {
         server.queue.shift();
 
         console.log(server);
-        message.channel.send('playing ' + server.queue[0]);
+        message.channel.send('playing ' + videos[0].title);
         if (server.queue[0]) {
             play(connection, message);
         } else {
