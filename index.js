@@ -115,6 +115,22 @@ bot.on('message', message => {
                         queue: []
                     }
                     var server = servers[message.guild.id];
+                    if (args[1].includes("https:")) {
+                        if (iamin === 'yes') {
+                            server.queue.push(args[1]);
+                            console.log(server);
+                            return;
+                        } else {
+                            server.queue.push(args[1]);
+                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                                iamin = 'yes'
+                                message.channel.send('playing ' + server.queue[0]);
+                                play(connection, message);
+                                console.log(server);
+                            })
+                        }
+                        return;
+                    }
 
                     search(songname, function(err, r) {
                         console.log('+');
@@ -123,9 +139,6 @@ bot.on('message', message => {
                         let videos = r.videos;
 
                         try {
-
-
-
                             url = videos[0].url;
                             server.queue.push(url);
                             console.log(iamin);
