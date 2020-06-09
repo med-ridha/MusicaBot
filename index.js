@@ -19,8 +19,9 @@ function play(connection, message) {
         server.queue.shift();
 
         console.log(server);
-        message.channel.send('playing ' + server.queue[0]);
+
         if (server.queue[0]) {
+            message.channel.send('playing ' + server.queue[0]);
             play(connection, message);
         } else {
             message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
@@ -150,10 +151,11 @@ bot.on('message', message => {
                      }*/
                     //message.channel.send("clearing queue");
 
-                    search(songname, function(err, r) {
+                    search(songname, async function(err, r) {
 
                         if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
                         message.channel.send('searching ' + songname);
+                        const r = await search(songname);
                         let videos = r.videos.slice(0, 10);
                         /*for (var i in videos) {
                             console.log(videos[i].title + '\n');
@@ -180,7 +182,7 @@ bot.on('message', message => {
                             } catch (ex) { console.log(ex) }
                         } catch (ex) { message.channel.send('something went wrong please try again ' + ex); }
                     });
-                    const r = await search(songname);
+
 
 
 
