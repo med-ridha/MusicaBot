@@ -161,9 +161,7 @@ bot.on('message', message => {
                         /*for (var i in videos) {
                             console.log(videos[i].title + '\n');
                         }*/
-                        if (!videos[0].url) {
-                            search(songname);
-                        }
+
                         try {
 
 
