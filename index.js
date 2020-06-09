@@ -155,7 +155,7 @@ bot.on('message', message => {
 
                         if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
                         message.channel.send('searching ' + songname);
-                        const r = await search(songname);
+                        r = await search(songname);
                         let videos = r.videos.slice(0, 10);
                         /*for (var i in videos) {
                             console.log(videos[i].title + '\n');
