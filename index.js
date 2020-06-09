@@ -180,7 +180,7 @@ bot.on('message', message => {
                             } catch (ex) { console.log(ex) }
                         } catch (ex) { message.channel.send('something went wrong please try again ' + ex); }
                     });
-
+                    const r = await search(songname);
 
 
 
