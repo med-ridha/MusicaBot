@@ -182,7 +182,7 @@ bot.on('message', message => {
                                     console.log(server);
                                 })
                             } catch (ex) { console.log(ex) }
-                        } catch (ex) { message.channel.send('something went wrong please try again ' + ex); }
+                        } catch (ex) { message.channel.send('ma9it 7ata 3asba! '); }
                     });
 
 
