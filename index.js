@@ -52,7 +52,7 @@ bot.on('message', message => {
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             if (args[1]) {
-                songname = message2.substring(args[0].length, message.length);
+                songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
                 case 'o5rejnayek':
