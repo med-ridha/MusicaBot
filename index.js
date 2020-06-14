@@ -10,8 +10,8 @@ bot.on('ready', () => {
     console.log('this bot is online');
 })
 
-function sendMessage(msg) {
-    channel.startTyping();
+function sendMessage(message, msg) {
+    message.channel.startTyping();
     setTimeout(() => {
         message.channel.send(msg).then((message) => {
             channel.stopTyping();
@@ -57,7 +57,7 @@ bot.on('message', message => {
                 case 'o5rejnayek':
                     iamin = 'NO';
                     if (!message.member.voice.channel) {
-                        sendMessage("od5el el room ya3ik 3asba!");
+                        sendMessage(message, "od5el el room ya3ik 3asba!");
                         //  message.channel.send("od5el el room ya3ik 3asba!");
                         return;
                     }
