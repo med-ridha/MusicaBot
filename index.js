@@ -13,7 +13,7 @@ bot.on('ready', () => {
 function sendMessage(msg) {
     channel.startTyping();
     setTimeout(() => {
-        channel.send(msg).then((message) => {
+        message.channel.send(msg).then((message) => {
             channel.stopTyping();
         });
     }, 5000)
