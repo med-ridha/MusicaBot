@@ -10,6 +10,15 @@ bot.on('ready', () => {
     console.log('this bot is online');
 })
 
+function sendMessage(msg) {
+    channel.startTyping();
+    setTimeout(() => {
+        channel.send(msg).then((message) => {
+            channel.stopTyping();
+        });
+    }, 5000)
+}
+
 function play(connection, message) {
     var server = servers[message.guild.id];
 
@@ -48,7 +57,8 @@ bot.on('message', message => {
                 case 'o5rejnayek':
                     iamin = 'NO';
                     if (!message.member.voice.channel) {
-                        message.channel.send("od5el el room ya3ik 3asba!");
+                        sendMessage("od5el el room ya3ik 3asba!");
+                        //  message.channel.send("od5el el room ya3ik 3asba!");
                         return;
                     }
                     var server = servers[message.guild.id];
