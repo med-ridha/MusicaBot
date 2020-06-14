@@ -14,7 +14,7 @@ function sendMessage(message, msg) {
     message.channel.startTyping();
     setTimeout(() => {
         message.channel.send(msg).then((message) => {
-            channel.stopTyping();
+            message.channel.stopTyping();
         });
     }, 5000)
 }
