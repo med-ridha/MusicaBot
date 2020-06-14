@@ -16,7 +16,7 @@ function sendMessage(message, msg) {
         message.channel.send(msg).then((message) => {
             message.channel.stopTyping();
         });
-    }, 5000)
+    }, 3000)
 }
 
 function play(connection, message) {
@@ -33,7 +33,8 @@ function play(connection, message) {
             message.channel.send('playing ' + server.queue[0]);
             play(connection, message);
         } else {
-            message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
+            sendMessage(message, "ma3adach fama songs fil queue, hani 5rajet 3asba 3ala rasek");
+            //message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
             iamin = 'NO';
             message.guild.voice.connection.disconnect();
         }
@@ -68,22 +69,24 @@ bot.on('message', message => {
                             while (server.queue[0]) {
                                 server.queue.shift();
                             }
-                            message.channel.send('hani 5arej ya zebi! ');
+                            sendMessage(message, "hani 5arej ya zebi! ");
+                            //message.channel.send('hani 5arej ya zebi! ');
 
                             message.guild.voice.connection.disconnect();
 
                         } else {
-
-                            message.channel.send('da5el zebi fi room 9bal 3asba 3ala rasek!');
+                            sendMessage(message, "da5el zebi fi room 9bal 3asba 3ala rasek!");
+                            //message.channel.send('da5el zebi fi room 9bal 3asba 3ala rasek!');
                         }
                     } catch (ex) {
-
-                        message.channel.send('da5el zebi fi room 9bal 3asba 3ala rasek!');
+                        sendMessage(message, "da5el zebi fi room 9bal 3asba 3ala rasek!");
+                        //message.channel.send('da5el zebi fi room 9bal 3asba 3ala rasek!');
                     }
                     break;
                 case 'osket3asba':
                     if (!message.member.voice.channel) {
-                        message.channel.send("od5el el room ya3ik 3asba!");
+                        sendMessage(message, "od5el el room ya3ik 3asba!");
+                        //message.channel.send("od5el el room ya3ik 3asba!");
                         return;
                     }
                     var server = servers[message.guild.id];
@@ -91,11 +94,13 @@ bot.on('message', message => {
                         if (message.guild.voice.connection) {
                             if (dispatcher) dispatcher.end();
                         } else {
-                            message.channel.send('ti zab manich 9a3ed na7ki');
+                            sendMessage(message, "ti zab manich 9a3ed na7ki");
+                            //message.channel.send('ti zab manich 9a3ed na7ki');
 
                         }
                     } catch (ex) {
-                        message.channel.send('ti zab manich 9a3ed na7ki');
+                        sendMessage(message, "ti zab manich 9a3ed na7ki");
+                        //message.channel.send('ti zab manich 9a3ed na7ki');
 
                     }
                     break;
@@ -114,11 +119,13 @@ bot.on('message', message => {
 
 
                     if (!args[1]) {
-                        message.channel.send("zidha el  name 3asba");
+                        sendMessage(message, "zidha el  name 3asba");
+                        // message.channel.send("zidha el  name 3asba");
                         return;
                     }
                     if (!message.member.voice.channel) {
-                        message.channel.send("od5el el room ya3ik 3asba!");
+                        sendMessage(message, "od5el el room ya3ik 3asba!");
+                        // message.channel.send("od5el el room ya3ik 3asba!");
                         return;
                     }
                     if (!servers[message.guild.id]) servers[message.guild.id] = {
@@ -166,8 +173,8 @@ bot.on('message', message => {
                                 })
                             } catch (ex) { console.log(ex) }
                         } catch (ex) {
-
-                            message.channel.send('mal9it 7ata 3asba ');
+                            sendMessage(message, "mal9it 7ata 3asba ");
+                            // message.channel.send('mal9it 7ata 3asba ');
                         }
                     });
 
@@ -177,18 +184,21 @@ bot.on('message', message => {
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
-                        message.channel.send("od5el el room ya3ik 3asba!");
+                        sendMessage(message, "od5el el room ya3ik 3asba!");
+                        //message.channel.send("od5el el room ya3ik 3asba!");
                         return;
                     }
                     try {
                         if (message.guild.voice.connection) {
                             if (dispatcher) dispatcher.pause(true);
                         } else {
-                            message.channel.send('ti zab manich 9a3ed na7ki');
+                            sendMessage(message, "ti zab manich 9a3ed na7ki");
+                            //message.channel.send('ti zab manich 9a3ed na7ki');
 
                         }
                     } catch (ex) {
-                        message.channel.send('ti zab manich 9a3ed na7ki');
+                        sendMessage(message, "ti zab manich 9a3ed na7ki");
+                        //message.channel.send('ti zab manich 9a3ed na7ki');
 
                     }
 
@@ -196,7 +206,8 @@ bot.on('message', message => {
 
                 case 'kamel':
                     if (!message.member.voice.channel) {
-                        message.channel.send("od5el el room ya3ik 3asba!");
+                        sendMessage(message, "od5el el room ya3ik 3asba!");
+                        //message.channel.send("od5el el room ya3ik 3asba!");
                         return;
                     }
                     try {
@@ -223,11 +234,13 @@ bot.on('message', message => {
                     }
                     break;
                 default:
-                    message.channel.send('mafhemt 7ata 3asba nayek!');
+                    sendMessage(message, "mafhemt 7ata 3asba nayek!");
+                    //message.channel.send('mafhemt 7ata 3asba nayek!');
                     break;
             }
         } else {
-            message.channel.send('fil room mta3 l bot ya3tik 3asba');
+            sendMessage(message, "fil room mta3 l bot ya3tik 3asba");
+            //message.channel.send('fil room mta3 l bot ya3tik 3asba');
         }
     }
 
