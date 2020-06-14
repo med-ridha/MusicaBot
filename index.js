@@ -150,7 +150,7 @@ bot.on('message', message => {
                     }
 
                     search(songname, function(err, r) {
-                        console.log('+');
+                        console.log(songname);
                         if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
                         message.channel.send('searching ' + songname);
                         let videos = r.videos;
