@@ -109,7 +109,7 @@ bot.on('message', message => {
                     message.channel.send('Pong!');
                     break;
                 case 'ya':
-                    if (args[1].toUpperCase() === "ZARGA" || args[1].toUpperCase() === "RIDHA" || args[1].toUpperCase() === "RIRI") {
+                    if (args[1].toUpperCase() === "ZARGA" || args[1].toUpperCase() === "RIDHA" || args[1].toUpperCase() === "RIRI" || args[1].toUpperCase() === "ZEMZEM" || args[1].toUpperCase() === "MOHAMED" || args[1].toUpperCase() === "MED" || args[1].toUpperCase() === "ZRIGA") {
                         message.channel.send('ya ' + args[1] + ' ya zabour!');
                     } else {
                         message.channel.send('ya ' + args[1] + ' ya mnayek!');
