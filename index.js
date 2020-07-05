@@ -51,7 +51,7 @@ bot.on('message', message => {
 
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
-            if (args[1]) {
+            if (args[1] && args[0] === '7ot') {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
