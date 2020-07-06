@@ -179,11 +179,11 @@ bot.on('message', message => {
                 case 'lyrics':
 
                     scraper.getLyric("death bed").then(result => {
-                        try {
-                            message.channel.send(result);
-                        } catch (ex) {
-                            console.log(ex);
-                        }
+
+                        message.channel.send(result);
+
+
+
                     }).catch(error => {
                         console.log("error")
                     });
