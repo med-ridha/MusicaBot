@@ -179,7 +179,8 @@ bot.on('message', message => {
                     var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
 
                     lyrics.then(function(result) {
-                        message.channel.send(result);
+                        let results = result.split("\n");
+                        message.channel.send(results);
                     })
                     break;
                 case 'osketla7dha':
