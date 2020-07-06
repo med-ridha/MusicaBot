@@ -179,15 +179,9 @@ bot.on('message', message => {
                 case 'lyrics':
 
                     scraper.getLyric(songname).then(result => {
-                        // if (result.toString().length < 1999) {
                         message.channel.send(result);
-                        // } else {
-                        //    let resarray = result.toString().substring(1).split("\n");
-                        message.channel.send(result);
-                        //}
-
                     }).catch(error => {
-                        message.channel.send("mafama 7ata song 3asba");
+                        console.log(error);
                     });
 
 
