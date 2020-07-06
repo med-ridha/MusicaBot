@@ -1,18 +1,15 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const ytdl = require('ytdl-core');
-//const search = require('yt-search');
 const { YouTube } = require('popyt');
+const scraper = require("azlyrics-scraper");
 const search = new YouTube(process.env.apiKey);
 var iamin;
-var url;
 const prefix = '+';
 var servers = {};
 bot.on('ready', () => {
     console.log('this bot is online');
 })
-
-
 
 function sendMessage(message, msg) {
     message.channel.startTyping();
@@ -25,12 +22,9 @@ function sendMessage(message, msg) {
 
 function play(connection, message) {
     var server = servers[message.guild.id];
-
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
-
     dispatcher.on("finish", () => {
         server.queue.shift();
-
         console.log(server);
 
         if (server.queue[0]) {
@@ -83,7 +77,7 @@ bot.on('message', message => {
 
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
-            if (args[1] && args[0] === '7ot') {
+            if (args[1] && args[0] === '7ot' || args[1] && args[0] === 'lyrics') {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
@@ -148,8 +142,6 @@ bot.on('message', message => {
                     }
                     break;
                 case '7ot':
-
-
                     if (!args[1]) {
                         sendMessage(message, "zidha el  name 3asba");
                         // message.channel.send("zidha el  name 3asba");
@@ -180,21 +172,24 @@ bot.on('message', message => {
                         }
                         return;
                     }
-
-                    //search(songname, async function(err, r) {
-
                     searchsong(message, songname);
+                    break;
 
-                    // });
 
+                case 'lyrics':
 
+                    scraper.getLyric(songname).then(result => {
+                        message.channel.send(result);
+                    }).catch(error => {
+                        message.channel.send("mafama 7ata song 3asba");
+                    });
 
 
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
                         sendMessage(message, "od5el el room ya3ik 3asba!");
-                        //message.channel.send("od5el el room ya3ik 3asba!");
+
                         return;
                     }
                     try {
@@ -202,12 +197,12 @@ bot.on('message', message => {
                             if (dispatcher) dispatcher.pause(true);
                         } else {
                             sendMessage(message, "ti zab manich 9a3ed na7ki");
-                            //message.channel.send('ti zab manich 9a3ed na7ki');
+
 
                         }
                     } catch (ex) {
                         sendMessage(message, "ti zab manich 9a3ed na7ki");
-                        //message.channel.send('ti zab manich 9a3ed na7ki');
+
 
                     }
 
@@ -216,7 +211,6 @@ bot.on('message', message => {
                 case 'kamel':
                     if (!message.member.voice.channel) {
                         sendMessage(message, "od5el el room ya3ik 3asba!");
-                        //message.channel.send("od5el el room ya3ik 3asba!");
                         return;
                     }
                     try {
@@ -244,12 +238,12 @@ bot.on('message', message => {
                     break;
                 default:
                     sendMessage(message, "mafhemt 7ata 3asba nayek!");
-                    //message.channel.send('mafhemt 7ata 3asba nayek!');
+
                     break;
             }
         } else {
             sendMessage(message, "fil room mta3 l bot ya3tik 3asba");
-            //message.channel.send('fil room mta3 l bot ya3tik 3asba');
+
         }
     }
 
