@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
-const scraper = require("azlyrics-scraper");
 const search = new YouTube(process.env.apiKey);
 var iamin;
 const prefix = '+';
@@ -77,7 +76,7 @@ bot.on('message', message => {
 
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
-            if (args[1] && args[0] === '7ot' || args[1] && args[0] === 'lyrics') {
+            if (args[1] && args[0] === '7ot') {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
@@ -174,15 +173,6 @@ bot.on('message', message => {
                     }
                     searchsong(message, songname);
                     break;
-
-
-                case 'lyrics':
-
-                    scraper.getLyric(songname).then(result => {
-                        message.channel.send(result);
-                    }).catch(error => {
-                        message.channel.send("mafama 7ata song 3asba");
-                    });
 
 
                     break;
