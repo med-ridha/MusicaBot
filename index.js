@@ -50,7 +50,6 @@ function play(connection, message) {
 async function searchsong(message, songname) {
     var server = servers[message.guild.id];
     let r = await search.getVideo(songname);
-    message.channel.send(r.url);
     console.log(songname);
     message.channel.send('searching ' + songname);
     try {
