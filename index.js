@@ -179,7 +179,7 @@ bot.on('message', message => {
                 case 'lyrics':
 
                     scraper.getLyric(songname).then(result => {
-                        if (result.length < 1999) {
+                        if (result.length() < 1999) {
                             message.channel.send(result);
                         } else {
                             let resarray = result.substring(1).split("\n");
