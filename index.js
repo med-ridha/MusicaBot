@@ -178,10 +178,10 @@ bot.on('message', message => {
 
                 case 'lyrics':
 
-                    scraper.getLyric(songname).then(result => {
-                        message.channel.send(result);
+                    scraper.getLyric("death bed").then(result => {
+                        console.log(result);
                     }).catch(error => {
-                        console.log(error);
+                        // Error handling here
                     });
 
 
