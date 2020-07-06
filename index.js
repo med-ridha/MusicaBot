@@ -179,9 +179,13 @@ bot.on('message', message => {
                 case 'lyrics':
 
                     scraper.getLyric("death bed").then(result => {
-                        console.log(result);
+                        try {
+                            message.channel.send(result);
+                        } catch (ex) {
+                            console.log(ex);
+                        }
                     }).catch(error => {
-                        // Error handling here
+                        console.log("error")
                     });
 
 
