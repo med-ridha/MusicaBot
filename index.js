@@ -20,6 +20,11 @@ function sendMessage(message, msg) {
     }, 3000)
 }
 
+async function searchsongurl(message, x) {
+    let b = await search.getVideo(x);
+    message.channel.send('playing ' + b.title);
+}
+
 function play(connection, message) {
     var server = servers[message.guild.id];
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
@@ -28,8 +33,7 @@ function play(connection, message) {
         console.log(server);
 
         if (server.queue[0]) {
-            let b = (async() => await search.getVideo(server.queue[0]))();
-            message.channel.send('playing ' + b.title);
+            searchsongurl(message, server.queue[0])
             play(connection, message);
         } else {
             sendMessage(message, "ma3adach fama songs fil queue, hani 5rajet 3asba 3ala rasek");
