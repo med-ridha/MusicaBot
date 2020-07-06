@@ -3,7 +3,6 @@ const bot = new Discord.Client();
 const ytdl = require('ytdl-core');
 //const search = require('yt-search');
 const { YouTube } = require('popyt');
-const apiKey = 'AIzaSyAWhTEts9l3_v9cFGfJmMbr00s9uM_lfu0';
 const search = new YouTube(process.env.apiKey);
 var iamin;
 var url;
