@@ -178,7 +178,7 @@ bot.on('message', message => {
 
                 case 'lyrics':
 
-                    scraper.getLyric(songname).then(result => {
+                    scraper.getLyric('clean bandit mama').then(result => {
                         message.channel.send(result);
                     }).catch(error => {
                         console.log(error)
