@@ -150,7 +150,7 @@ bot.on('message', message => {
                     }
 
                     search(songname, async function(err, r) {
-                        let r = await search(songname);
+                        r = await search(songname);
                         console.log(songname);
                         if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
                         message.channel.send('searching ' + songname);
