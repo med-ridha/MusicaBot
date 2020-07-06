@@ -176,6 +176,10 @@ bot.on('message', message => {
                     break;
 
                 case 'lyrics':
+                    if (!songname) {
+                        message.channel.send("7ot el esm 3asba");
+                        return;
+                    }
                     var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
 
                     lyrics.then(function(result) {
