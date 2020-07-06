@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+const solenolyrics = require("solenolyrics");
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
@@ -76,7 +77,7 @@ bot.on('message', message => {
 
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
-            if (args[1] && args[0] === '7ot') {
+            if (args[1] && args[0] === '7ot' || args[1] && args[0] === 'lyrics') {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
@@ -174,7 +175,12 @@ bot.on('message', message => {
                     searchsong(message, songname);
                     break;
 
+                case 'lyrics':
+                    var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
 
+                    lyrics.then(function(result) {
+                        console.log(result);
+                    })
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
