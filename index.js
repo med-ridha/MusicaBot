@@ -180,7 +180,7 @@ bot.on('message', message => {
 
                     scraper.getLyric("death bed").then(result => {
 
-                        message.channel.send(result);
+                        console.log(result);
 
 
 
