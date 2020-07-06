@@ -148,35 +148,36 @@ bot.on('message', message => {
                         }
                         return;
                     }
-                    let r = await search(songname);
-                    //search(songname, function(err, r) {
-                    console.log(songname);
-                    //if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
-                    message.channel.send('searching ' + songname);
-                    let videos = r.videos;
 
-                    try {
-                        url = videos[0].url;
-                        server.queue.push(url);
-                        console.log(iamin);
-                        if (iamin === 'yes') {
-                            message.channel.send('Queued ' + videos[0].title);
+                    search(songname, async function(err, r) {
+                        let r = await search(songname);
+                        console.log(songname);
+                        if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
+                        message.channel.send('searching ' + songname);
+                        let videos = r.videos;
 
-                            return;
-                        }
                         try {
-                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-                                iamin = 'yes'
-                                message.channel.send('playing ' + videos[0].title);
-                                play(connection, message);
-                                console.log(server);
-                            })
-                        } catch (ex) { console.log(ex) }
-                    } catch (ex) {
-                        sendMessage(message, "mal9it 7ata 3asba ");
-                        // message.channel.send('mal9it 7ata 3asba ');
-                    }
-                    // });
+                            url = videos[0].url;
+                            server.queue.push(url);
+                            console.log(iamin);
+                            if (iamin === 'yes') {
+                                message.channel.send('Queued ' + videos[0].title);
+
+                                return;
+                            }
+                            try {
+                                if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                                    iamin = 'yes'
+                                    message.channel.send('playing ' + videos[0].title);
+                                    play(connection, message);
+                                    console.log(server);
+                                })
+                            } catch (ex) { console.log(ex) }
+                        } catch (ex) {
+                            sendMessage(message, "mal9it 7ata 3asba ");
+                            // message.channel.send('mal9it 7ata 3asba ');
+                        }
+                    });
 
 
 
