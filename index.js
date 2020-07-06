@@ -28,7 +28,8 @@ function play(connection, message) {
         console.log(server);
 
         if (server.queue[0]) {
-            message.channel.send('playing ' + server.queue[0]);
+            let b = (async() => await search.getVideo(server.queue[0]))();
+            message.channel.send('playing ' + b.title);
             play(connection, message);
         } else {
             sendMessage(message, "ma3adach fama songs fil queue, hani 5rajet 3asba 3ala rasek");
