@@ -1,7 +1,10 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const ytdl = require('ytdl-core');
-const search = require('yt-search');
+//const search = require('yt-search');
+const { YouTube } = require('popyt');
+const apiKey = 'AIzaSyAWhTEts9l3_v9cFGfJmMbr00s9uM_lfu0';
+const search = new YouTube(process.env.apiKey);
 var iamin;
 var url;
 const prefix = '+';
@@ -9,6 +12,8 @@ var servers = {};
 bot.on('ready', () => {
     console.log('this bot is online');
 })
+
+
 
 function sendMessage(message, msg) {
     message.channel.startTyping();
@@ -40,6 +45,35 @@ function play(connection, message) {
         }
 
     });
+}
+
+async function searchsong(message, songname) {
+    var server = servers[message.guild.id];
+    let r = await search.getVideo(songname);
+    message.channel.send(r.url);
+    console.log(songname);
+    message.channel.send('searching ' + songname);
+    try {
+
+        server.queue.push(r.url);
+        console.log(iamin);
+        if (iamin === 'yes') {
+            message.channel.send('Queued ' + r.title);
+
+            return;
+        }
+        try {
+            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                iamin = 'yes'
+                message.channel.send('playing ' + r.title);
+                play(connection, message);
+                console.log(server);
+            })
+        } catch (ex) { console.log(ex) }
+    } catch (ex) {
+        sendMessage(message, "mal9it 7ata 3asba ");
+        // message.channel.send('mal9it 7ata 3asba ');
+    }
 }
 bot.on('message', message => {
 
@@ -149,35 +183,11 @@ bot.on('message', message => {
                         return;
                     }
 
-                    search(songname, async function(err, r) {
-                        r = await search(songname);
-                        console.log(songname);
-                        if (err) return message.channel.send('tnekna, tnekna ya zebi tnekna ! ');
-                        message.channel.send('searching ' + songname);
-                        let videos = r.videos;
+                    //search(songname, async function(err, r) {
 
-                        try {
-                            url = videos[0].url;
-                            server.queue.push(url);
-                            console.log(iamin);
-                            if (iamin === 'yes') {
-                                message.channel.send('Queued ' + videos[0].title);
+                    searchsong(message, songname);
 
-                                return;
-                            }
-                            try {
-                                if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-                                    iamin = 'yes'
-                                    message.channel.send('playing ' + videos[0].title);
-                                    play(connection, message);
-                                    console.log(server);
-                                })
-                            } catch (ex) { console.log(ex) }
-                        } catch (ex) {
-                            sendMessage(message, "mal9it 7ata 3asba ");
-                            // message.channel.send('mal9it 7ata 3asba ');
-                        }
-                    });
+                    // });
 
 
 
@@ -249,4 +259,3 @@ bot.on('message', message => {
 })
 
 bot.login(process.env.token);
-//
