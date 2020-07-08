@@ -26,6 +26,7 @@ async function searchsongurl(message, x) {
 }
 
 function play(connection, message) {
+    connection.voice.setSelfDeaf(true);
     var server = servers[message.guild.id];
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
     dispatcher.on("finish", () => {
@@ -33,7 +34,7 @@ function play(connection, message) {
         console.log(server);
 
         if (server.queue[0]) {
-            searchsongurl(message, server.queue[0])
+            searchsongurl(message, server.queue[0]);
             play(connection, message);
         } else {
             sendMessage(message, "ma3adach fama songs fil queue, hani 5rajet 3asba 3ala rasek");
