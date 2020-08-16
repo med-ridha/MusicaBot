@@ -11,13 +11,6 @@ bot.on('ready', () => {
     console.log('this bot is online');
 })
 
-async function getLyrics(message, songname) {
-    var lyrics = await solenolyrics.requestLyricsFor(songname);
-    await lyrics.then(function(result) {
-        message.channel.send(result);
-    })
-}
-
 function sendMessage(message, msg) {
     message.channel.startTyping();
     setTimeout(() => {
@@ -193,12 +186,14 @@ bot.on('message', message => {
                         message.channel.send("7ot el esm 3asba");
                         return;
                     }
-                    getLyrics(message, songname);
+                    var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
 
-
-                    console.log("result");
-
-
+                    lyrics.then(function(result) {
+                        while (result) {
+                            message.channel.send(result.substring(0, 2000));
+                            result = result.substring(2000);
+                        }
+                    })
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
