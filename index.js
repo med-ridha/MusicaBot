@@ -188,7 +188,8 @@ bot.on('message', message => {
                     }
                     var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
 
-                    lyrics.then(function(result) {
+                    lyrics.then(function(err, result) {
+                        if (err) throw err;
                         while (result) {
                             message.channel.send(result.substring(0, 2000));
                             result = result.substring(2000);
