@@ -194,9 +194,8 @@ bot.on('message', message => {
                             message.channel.send(result.substring(0, 2000));
                             result = result.substring(2000);
                         }
-                        if (result) {
-                            console.log("result");
-                        }
+                        console.log("result");
+
                     })
                     break;
                 case 'osketla7dha':
