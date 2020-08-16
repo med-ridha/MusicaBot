@@ -190,10 +190,9 @@ bot.on('message', message => {
 
 
 
-                    while (lyrics) {
-                        message.channel.send(lyrics.toString().substring(0, 2000));
-                        lyrics = lyrics.toString().substring(2000);
-                    }
+                    message.channel.send(lyrics);
+
+
                     console.log("result");
 
 
