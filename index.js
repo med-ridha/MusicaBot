@@ -13,7 +13,9 @@ bot.on('ready', () => {
 
 async function getLyrics(message, songname) {
     let lyrics = await solenolyrics.requestLyricsFor(songname);
-    message.channel.send(lyrics);
+    lyrics.then(function(result) {
+        message.channel.send(result);
+    })
 }
 
 function sendMessage(message, msg) {
