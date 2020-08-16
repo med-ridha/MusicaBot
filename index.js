@@ -191,8 +191,8 @@ bot.on('message', message => {
 
 
                     while (lyrics) {
-                        message.channel.send(lyrics.substring(0, 2000));
-                        lyrics = lyrics.substring(2000);
+                        message.channel.send(lyrics.toString().substring(0, 2000));
+                        lyrics = lyrics.toString().substring(2000);
                     }
                     console.log("result");
 
