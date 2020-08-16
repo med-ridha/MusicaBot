@@ -20,6 +20,12 @@ function sendMessage(message, msg) {
     }, 3000)
 }
 
+async function getLyrics(message, songname) {
+
+    var lyrics = await solenolyrics.requestLyricsFor(songname);
+    message.channel.send(lyrics);
+}
+
 async function searchsongurl(message, x) {
     let b = await search.getVideo(x);
     message.channel.send('playing ' + b.title);
@@ -186,15 +192,7 @@ bot.on('message', message => {
                         message.channel.send("7ot el esm 3asba");
                         return;
                     }
-                    var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
-
-                    lyrics.then(function(result) {
-                        message.channel.send(lyrics)
-                        while (result) {
-                            message.channel.send(result.substring(0, 2000));
-                            result = result.substring(2000);
-                        }
-                    })
+                    getLyrics(message, songname)
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
