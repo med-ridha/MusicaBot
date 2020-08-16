@@ -20,19 +20,6 @@ function sendMessage(message, msg) {
     }, 3000)
 }
 
-async function lyricscurrent(message, x) {
-    let b = await search.getVideo(x);
-    message.channel.send('Searching lyrics for ' + b.title);
-    var lyrics = (async() => await solenolyrics.requestLyricsFor(b.title))();
-
-    lyrics.then(function(result) {
-        while (result) {
-            message.channel.send(result.substring(0, 2000));
-            result = result.substring(2000);
-        }
-    })
-}
-
 async function searchsongurl(message, x) {
     let b = await search.getVideo(x);
     message.channel.send('playing ' + b.title);
@@ -96,9 +83,9 @@ bot.on('message', message => {
 
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
-
-            songname = message2.substring(args[0].length + 2, message.length);
-
+            if (args[1] && args[0] === '7ot' || args[1] && args[0] === 'lyrics') {
+                songname = message2.substring(args[0].length + 2, message.length);
+            }
             switch (args[0]) {
                 case 'o5rejnayek':
                     iamin = 'NO';
@@ -195,22 +182,18 @@ bot.on('message', message => {
                     break;
 
                 case 'lyrics':
-                    var server = servers[message.guild.id];
-                    if (args[1]) {
-
-
-
-                        var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
-
-                        lyrics.then(function(result) {
-                            while (result) {
-                                message.channel.send(result.substring(0, 2000));
-                                result = result.substring(2000);
-                            }
-                        })
-                    } else {
-                        lyricscurrent(message, server.queue[0]);
+                    if (!songname) {
+                        message.channel.send("7ot el esm 3asba");
+                        return;
                     }
+                    var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
+
+                    lyrics.then(function(result) {
+                        while (result) {
+                            message.channel.send(result.substring(0, 2000));
+                            result = result.substring(2000);
+                        }
+                    })
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
