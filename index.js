@@ -188,15 +188,15 @@ bot.on('message', message => {
                     }
                     var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
 
-                    lyrics.then(function(result) {
 
-                        while (result) {
-                            message.channel.send(result.substring(0, 2000));
-                            result = result.substring(2000);
-                        }
-                        console.log("result");
 
-                    })
+                    while (lyrics) {
+                        message.channel.send(lyrics.substring(0, 2000));
+                        lyrics = lyrics.substring(2000);
+                    }
+                    console.log("result");
+
+
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
