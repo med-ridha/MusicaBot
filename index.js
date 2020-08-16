@@ -11,6 +11,11 @@ bot.on('ready', () => {
     console.log('this bot is online');
 })
 
+async function getLyrics(message, songname) {
+    let lyrics = await solenolyrics.requestLyricsFor(songname);
+    message.channel.send(lyrics);
+}
+
 function sendMessage(message, msg) {
     message.channel.startTyping();
     setTimeout(() => {
@@ -186,11 +191,7 @@ bot.on('message', message => {
                         message.channel.send("7ot el esm 3asba");
                         return;
                     }
-                    var lyrics = (async() => await solenolyrics.requestLyricsFor(songname))();
-
-
-
-                    message.channel.send(lyrics);
+                    getLyrics(message, songname);
 
 
                     console.log("result");
