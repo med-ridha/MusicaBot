@@ -20,7 +20,7 @@ function sendMessage(message, msg) {
     }, 3000)
 }
 
-async function searchsong(message, x) {
+async function lyricscurrent(message, x) {
     let b = await search.getVideo(x);
     message.channel.send('Searching lyrics for ' + b.title);
     var lyrics = (async() => await solenolyrics.requestLyricsFor(b.title))();
@@ -96,9 +96,9 @@ bot.on('message', message => {
 
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
-            if (args[1] && args[0] === '7ot' || args[1] && args[0] === 'lyrics') {
-                songname = message2.substring(args[0].length + 2, message.length);
-            }
+
+            songname = message2.substring(args[0].length + 2, message.length);
+
             switch (args[0]) {
                 case 'o5rejnayek':
                     iamin = 'NO';
@@ -196,7 +196,7 @@ bot.on('message', message => {
 
                 case 'lyrics':
                     var server = servers[message.guild.id];
-                    if (songname) {
+                    if (args[1]) {
 
 
 
@@ -209,7 +209,7 @@ bot.on('message', message => {
                             }
                         })
                     } else {
-                        searchsong(message, server.queue[0]);
+                        lyricscurrent(message, server.queue[0]);
                     }
                     break;
                 case 'osketla7dha':
