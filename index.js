@@ -23,7 +23,7 @@ function sendMessage(message, msg) {
 async function getLyrics(message, songname) {
 
     var lyrics = await solenolyrics.requestLyricsFor(songname);
-    message.channel.send(lyrics);
+    message.channel.send(lyrics + " ");
 }
 
 async function searchsongurl(message, x) {
