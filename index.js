@@ -23,7 +23,12 @@ function sendMessage(message, msg) {
 async function getLyrics(message, songname) {
 
     var lyrics = await solenolyrics.requestLyricsFor(songname);
-    message.channel.send(lyrics + " ");
+
+    while (lyrics) {
+        message.channel.send(lyrics.substring(0, 2000))
+        lyrics = lyrics.substring(2000);
+    }
+
 }
 
 async function searchsongurl(message, x) {
@@ -192,7 +197,7 @@ bot.on('message', message => {
                         message.channel.send("7ot el esm 3asba");
                         return;
                     }
-                    getLyrics(message, songname)
+                    getLyrics(message, songname);
                     break;
                 case 'osketla7dha':
                     if (!message.member.voice.channel) {
