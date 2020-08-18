@@ -17,7 +17,7 @@ function sendMessage(message, msg) {
         message.channel.send(msg).then((message) => {
             message.channel.stopTyping();
         });
-    }, 3000)
+    }, 2000)
 }
 
 async function getLyrics(message, songname) {
