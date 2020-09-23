@@ -4,7 +4,7 @@ const solenolyrics = require("solenolyrics");
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
-var iamin;
+
 const prefix = '+';
 var servers = {};
 bot.on('ready', () => {
