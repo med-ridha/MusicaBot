@@ -62,18 +62,21 @@ async function searchsong(message, songname) {
     let r = await search.getVideo(songname);
     console.log(songname);
     message.channel.send('searching ' + songname);
+
     try {
 
         server.queue.push(r.url);
-        console.log(iamin);
-        if (iamin === 'yes') {
-            message.channel.send('Queued ' + r.title);
 
-            return;
-        }
+
+
         try {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-                iamin = 'yes'
+
+                if (message.guild.voice.connection.dispatcher) {
+                    message.channel.send('Queued ' + r.title);
+
+                    return;
+                }
                 message.channel.send('playing ' + r.title);
                 play(connection, message);
                 console.log(server);
@@ -174,19 +177,18 @@ bot.on('message', message => {
                     }
                     var server = servers[message.guild.id];
                     if (args[1].includes("https:")) {
-                        if (iamin === 'yes') {
-                            server.queue.push(args[1]);
-                            console.log(server);
-                            return;
-                        } else {
-                            server.queue.push(args[1]);
-                            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-                                iamin = 'yes'
-                                message.channel.send('playing ' + server.queue[0]);
-                                play(connection, message);
+                        server.queue.push(args[1]);
+                        if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                            if (message.guild.voice.connection.dispatcher) {
+                                message.channel.send('Queued ' + args[1]);
                                 console.log(server);
-                            })
-                        }
+                                return;
+                            }
+                            message.channel.send('playing ' + server.queue[0]);
+                            play(connection, message);
+                            console.log(server);
+                        })
+
                         return;
                     }
                     searchsong(message, songname);
