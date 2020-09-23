@@ -9,7 +9,7 @@
   "author": "Ridha",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.3.1",
     "ffmpeg-static": "^4.2.2",
     "opusscript": "0.0.7",
     "popyt": "^4.1.0",
