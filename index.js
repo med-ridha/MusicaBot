@@ -16,7 +16,7 @@ async function addtodb(name, blame, count) {
         if (err) throw err;
         var dbo = db.db("mydb");
         var myobj = { name: name, blame: blame, count: count };
-        dbo.collection("songid").insertOne(myobj, async function(err, res) {
+        dbo.collection("people").insertOne(myobj, async function(err, res) {
             if (err) throw err;
             console.log("1 document inserted");
             await db.close();
