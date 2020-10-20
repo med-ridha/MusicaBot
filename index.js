@@ -4,17 +4,33 @@ const solenolyrics = require("solenolyrics");
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+var MongoClient = require('mongodb').MongoClient;
+var url = process.env.MONGO_URL;
+
 const prefix = '+';
 var servers = {};
-mongoose.connect(process.env.MONGOD_URL, {
+
+async function addtodb(name, blame, count) {
+    MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("mydb");
+        var myobj = { name: name, blame: blame, count: count };
+        dbo.collection("songid").insertOne(myobj, async function(err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            await db.close();
+        });
+    });
+}
+/*mongoose.connect(process.env.MONGOD_URL, {
     useNewUrlParser: true
         //useUnifiedTopology: true;
 });
 
 mongoose.connection.on('connected', () => {
     console.log("Mongoose is connected");
-})
+})*/
 bot.on('ready', () => {
     console.log('this bot is online');
 });
@@ -230,7 +246,9 @@ bot.on('message', message => {
                     }
 
                     break;
-
+                case "zidblame":
+                    addtodb('ridha', 'majach', "1");
+                    break;
                 case 'kamel':
                     if (!message.member.voice.channel) {
                         sendMessage(message, "od5el el room ya3ik 3asba!");
