@@ -8,12 +8,20 @@ const mongoose = require('mongoose');
 const prefix = '+';
 var servers = {};
 mongoose.connect(process.env.MONGOD_URL, {
-    useNewUrlParser: true
-        //useUnifiedTopology: true;
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 
 mongoose.connection.on('connected', () => {
     console.log("Mongoose is connected");
+})
+
+mongoose.model('people', {
+    name: String,
+    count: 0
+});
+mongoose.model('people').find(function(err, res) {
+    console.log(res);
 })
 bot.on('ready', () => {
     console.log('this bot is online');
