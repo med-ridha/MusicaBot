@@ -4,12 +4,20 @@ const solenolyrics = require("solenolyrics");
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
-
+const mongoose = require('mongoose');
 const prefix = '+';
 var servers = {};
+mongoose.connect(process.env.MONGOD_URL, {
+    useNewUrlParser: true
+        //useUnifiedTopology: true;
+});
+
+mongoose.connection.on('connected', () => {
+    console.log("Mongoose is connected");
+})
 bot.on('ready', () => {
     console.log('this bot is online');
-})
+});
 
 function sendMessage(message, msg) {
     message.channel.startTyping();
