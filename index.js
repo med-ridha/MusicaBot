@@ -31,13 +31,26 @@ async function leaderBoard(message) {
             people = people.sort(Comparator);
             people.reverse()
             for (i = 0; i < people.length; i++) {
-                message.channel.send(`${i} : ${people[i]}`);
+                message.channel.send(`${i+1} : ${people[i]}`);
             }
 
             await db.close();
         });
     });
 
+}
+
+async function addtodb(message, name, count) {
+    MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("mydb");
+        var myobj = { name: name, count: count };
+        dbo.collection("people").insertOne(myobj, async function(err, res) {
+            if (err) throw err;
+            message.channel.send("1 document inserted");
+            await db.close();
+        });
+    });
 }
 
 
@@ -135,6 +148,9 @@ bot.on('message', message => {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
+                case 'add':
+                    addtodb(message, args[1], parseInt(args[2]));
+                    break;
                 case 'leaderBoard':
                     leaderBoard(message);
                     break;
