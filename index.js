@@ -175,7 +175,7 @@ bot.on('message', message => {
                         return;
                     }
                     var count = parseInt(args[args.length - 1]);
-                    args.push();
+                    args.pop();
                     var name = "";
                     while (args[1]) {
                         name = name + args[1];
