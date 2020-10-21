@@ -44,12 +44,12 @@ async function addtodb(message, name, count) {
     MongoClient.connect(uri, { useUnifiedTopology: true }, async function(err, db) {
         if (err) throw err;
         var dbo = db.db("mydb");
-        await dbo.collection("people").findOne({ name: name }).toArray(function(err, result) {
+        await dbo.collection("people").findOne({ name: name }).toArray(async function(err, result) {
             if (err) throw err;
             if (result) {
                 var myquery = { name: name };
                 var newvalues = { $set: { name: name, count: result.count += count } };
-                dbo.collection("people").updateOne(myquery, newvalues, function(err, res) {
+                dbo.collection("people").updateOne(myquery, newvalues, async function(err, res) {
                     if (err) throw err;
                     console.log("1 document updated");
 
