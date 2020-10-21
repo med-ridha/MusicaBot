@@ -10,7 +10,12 @@ const uri = process.env.MONGOD_URL;
 const client = new MongoClient(uri);
 const prefix = '+';
 var servers = {};
+async function listDatabases(client) {
+    databasesList = await client.db().admin().listDatabases();
 
+    console.log("Databases:");
+    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+};
 async function test() {
     try {
         // Connect to the MongoDB cluster
