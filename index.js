@@ -10,26 +10,27 @@ const uri = process.env.MONGOD_URL;
 const prefix = '+';
 var servers = {};
 
-async function checkindb() {
-    return new Promise((resolve, reject) => {
-        MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("mydb");
-            dbo.collection("people").find({}).toArray(async function(err, result) {
-                if (err) throw err;
-                console.log(result);
+async function affichedb() {
 
-                resolve(true);
-                await db.close();
-            });
+    MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("mydb");
+        dbo.collection("people").find({}).toArray(async function(err, result) {
+            if (err) throw err;
+            var i = 0;
+            for (i = 0; i < result.length; i++) {
+                console.log("name : " + result[i].name);
+                console.log("count :" + result[i].count);
+            }
+
+            await db.close();
         });
-    })
+    });
+
 }
 async function testdb() {
-    var promise = await checkindb();
-    promise.then(async function(result) {
-        console.log("done");
-    });
+    affichedb();
+
 }
 
 bot.on('ready', () => {
