@@ -54,7 +54,7 @@ async function addtodb(message, name, count) {
                 var newvalues = { $set: { name: name, count: count } };
                 dbo.collection("people").updateOne(myquery, newvalues, async function(err, res) {
                     if (err) throw err;
-                    console.log("1 document updated");
+                    message.channel.send("1 document updated");
 
                 });
 
