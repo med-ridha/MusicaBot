@@ -6,36 +6,30 @@ const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
 const { MongoClient } = require('mongodb');
 const uri = process.env.MONGOD_URL;
-const client = new MongoClient(uri);
+//const client = new MongoClient(uri);
 const prefix = '+';
 var servers = {};
 
-async function listDatabases(client) {
-    const col = client.db('mydb').collection('people');
+async function checkindb() {
+    return new Promise((resolve, reject) => {
+        MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("mydb");
+            dbo.collection("songid").find({}).toArray(async function(err, result) {
+                if (err) throw err;
+                console.log(result);
 
-    col.find({}).toArray().then(function(err, res) {
-        if (err) throw err;
-        console.log(res);
+                resolve(true);
+                await db.close();
+            });
+        });
     })
-};
-async function test() {
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
-
-        // Make the appropriate DB calls
-        await listDatabases(client);
-
-    } catch (e) {
-        console.error(e);
-    } finally {
-        await client.close();
-    }
 }
 
-test().catch(console.error);
-
-
+var promise = await checkindb(videoID, "video", downladoMode);
+promise.then(async function(result) {
+    console.log("done");
+})
 
 bot.on('ready', () => {
     console.log('this bot is online');
