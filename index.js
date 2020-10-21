@@ -47,7 +47,7 @@ async function addtodb(message, name, count) {
         dbo.collection("people").findOne({ name: name }, async function(err, result) {
             if (err) throw err;
             if (result) {
-                message.send.channel("mawjoud");
+                message.channel.send("mawjoud");
                 var myquery = { name: name };
                 var newvalues = { $set: { name: name, count: count } };
                 dbo.collection("people").updateOne(myquery, newvalues, async function(err, res) {
