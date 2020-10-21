@@ -22,8 +22,8 @@ async function affichedb() {
         var dbo = db.db("mydb");
         dbo.collection("people").find({}).toArray(async function(err, result) {
             if (err) throw err;
-            result = result.sort(Comparator);
-            console.log(result);
+            result2 = result.sort(Comparator);
+            console.log(result2);
 
             await db.close();
         });
