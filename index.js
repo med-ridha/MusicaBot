@@ -16,7 +16,7 @@ function Comparator(a, b) {
     if (a[1] > b[1]) return 1;
     return 0;
 }
-async function affichedb() {
+async function leaderBoard() {
 
     MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
         if (err) throw err;
@@ -29,7 +29,9 @@ async function affichedb() {
 
             }
             people = people.sort(Comparator);
-            console.log(people);
+            for (i = 0; i < people.length; i++) {
+                console.log(`${i} : ${people[i]}`);
+            }
 
             await db.close();
         });
@@ -37,7 +39,7 @@ async function affichedb() {
 
 }
 async function testdb() {
-    affichedb();
+    leader();
 
 }
 
@@ -135,8 +137,8 @@ bot.on('message', message => {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
-                case 'testdb':
-                    testdb();
+                case 'leaderBoard':
+                    leaderBoard();
                     break;
                 case 'o5rejnayek':
                     iamin = 'NO';
