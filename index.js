@@ -9,10 +9,11 @@ const uri = process.env.MONGOD_URL;
 //const client = new MongoClient(uri);
 const prefix = '+';
 var servers = {};
+var people = {};
 
 function Comparator(a, b) {
-    if (a[2].count < b[2].count) return -1;
-    if (a[2].count > b[2].count) return 1;
+    if (a[2] < b[2]) return -1;
+    if (a[2] > b[2]) return 1;
     return 0;
 }
 async function affichedb() {
@@ -22,9 +23,12 @@ async function affichedb() {
         var dbo = db.db("mydb");
         dbo.collection("people").find({}).toArray(async function(err, result) {
             if (err) throw err;
+            var i = 0;
+            for (i = 0; i < result.length; i++) {
+                people[i] = result[i];
+            }
 
-            result = result.sort(Comparator);
-            console.log(result);
+            console.log(people);
 
             await db.close();
         });
