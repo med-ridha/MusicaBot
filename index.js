@@ -13,7 +13,10 @@ var servers = {};
 async function listDatabases(client) {
     const col = client.db('mydb').collection('people');
 
-    console.log(col.find({}).toArray());
+    col.find({}).toArray().then(function(err, res) {
+        if (err) throw err;
+        console.log(res);
+    })
 };
 async function test() {
     try {
