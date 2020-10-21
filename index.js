@@ -190,6 +190,7 @@ bot.on('message', message => {
                     break;
                 case 'leaderBoard':
                     leaderBoard(message);
+                    people = [];
                     break;
                 case 'o5rejnayek':
                     iamin = 'NO';
