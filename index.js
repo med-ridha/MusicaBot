@@ -28,7 +28,7 @@ async function affichedb() {
                 people[i] = [result[i].name, result[i].count];
 
             }
-
+            people = people.sort(Comparator);
             console.log(people);
 
             await db.close();
