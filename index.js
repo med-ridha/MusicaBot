@@ -4,10 +4,32 @@ const solenolyrics = require("solenolyrics");
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
+const uri = process.env.MONGOD_URL;
+const client = new MongoClient(uri);
 const prefix = '+';
 var servers = {};
-mongoose.connect(process.env.MONGOD_URL, {
+
+async function test() {
+    try {
+        // Connect to the MongoDB cluster
+        await client.connect();
+
+        // Make the appropriate DB calls
+        await listDatabases(client);
+
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+}
+
+test().catch(console.error);
+
+
+/*mongoose.connect(process.env.MONGOD_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -22,7 +44,7 @@ mongoose.model('people', {
 });
 mongoose.model('people').find(function(err, res) {
     console.log(res);
-})
+})*/
 bot.on('ready', () => {
     console.log('this bot is online');
 });
