@@ -11,6 +11,8 @@ const prefix = '+';
 var servers = {};
 var people = [];
 
+
+
 function Comparator(a, b) {
     if (a[1] < b[1]) return -1;
     if (a[1] > b[1]) return 1;
@@ -71,18 +73,6 @@ async function addtodb(message, name, count) {
     });
 }
 
-async function update(message, name, count) {
-    MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("mydb");
-        var myobj = { name: name, count: count };
-        dbo.collection("people").updateOne({ name: name }, myobj, async function(err, res) {
-            if (err) throw err;
-            message.channel.send(`${name} tzad fi lista`);
-            await db.close();
-        });
-    });
-}
 
 
 bot.on('ready', () => {
@@ -180,8 +170,20 @@ bot.on('message', message => {
             }
             switch (args[0]) {
                 case 'add':
+                    if (!args[1]) {
+                        message.channel.send("zid el esm wel count");
+                        return;
+                    }
+                    var count = parseInt(args[args.length - 1]);
+                    args.push();
+                    var name = "";
+                    while (args[1]) {
+                        name = name + args[1];
+                        if (args[2]) name = name + ' ';
+                        args.shift();
+                    }
                     if (message.member.hasPermission("ADMINISTRATOR")) {
-                        addtodb(message, args[1], parseInt(args[2]));
+                        addtodb(message, name, count);
                     } else {
                         sendMessage(message, "makch admin");
                     }
