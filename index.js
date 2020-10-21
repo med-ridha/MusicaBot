@@ -9,7 +9,7 @@ const uri = process.env.MONGOD_URL;
 //const client = new MongoClient(uri);
 const prefix = '+';
 var servers = {};
-var people = {};
+var people = [];
 
 function Comparator(a, b) {
     if (a[1] < b[1]) return -1;
