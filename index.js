@@ -44,7 +44,7 @@ async function addtodb(message, name, count) {
     MongoClient.connect(uri, { useUnifiedTopology: true }, async function(err, db) {
         if (err) throw err;
         var dbo = db.db("mydb");
-        await dbo.collection("people").findOne({ name: name }).toArray(async function(err, result) {
+        await dbo.collection("people").findOne({ name: name }, async function(err, result) {
             if (err) throw err;
             if (result) {
                 var myquery = { name: name };
