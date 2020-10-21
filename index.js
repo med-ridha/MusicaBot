@@ -25,11 +25,12 @@ async function checkindb() {
         });
     })
 }
-
-var promise = await checkindb(videoID, "video", downladoMode);
-promise.then(async function(result) {
-    console.log("done");
-})
+async function testdb() {
+    var promise = await checkindb(videoID, "video", downladoMode);
+    promise.then(async function(result) {
+        console.log("done");
+    });
+}
 
 bot.on('ready', () => {
     console.log('this bot is online');
@@ -125,6 +126,9 @@ bot.on('message', message => {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
             switch (args[0]) {
+                case 'testdb':
+                    testdb();
+                    break;
                 case 'o5rejnayek':
                     iamin = 'NO';
                     if (!message.member.voice.channel) {
