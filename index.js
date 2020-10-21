@@ -44,10 +44,40 @@ async function addtodb(message, name, count) {
     MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("mydb");
-        var myobj = { name: name, count: count };
-        dbo.collection("people").insertOne(myobj, async function(err, res) {
+        await dbo.collection("people").findOne({ name: name }).toArray(function(err, result) {
             if (err) throw err;
-            message.channel.send("1 document inserted");
+            if (result) {
+                var myquery = { name: name };
+                var newvalues = { $set: { name: name, count: result.count += count } };
+                dbo.collection("people").updateOne(myquery, newvalues, function(err, res) {
+                    if (err) throw err;
+                    console.log("1 document updated");
+
+                });
+                await db.close();
+
+            } else {
+                var myobj = { name: name, count: count };
+                dbo.collection("people").insertOne(myobj, async function(err, res) {
+                    if (err) throw err;
+                    message.channel.send(`${name} tzad fi lista`);
+                    await db.close();
+                });
+            }
+
+        });
+
+    });
+}
+
+async function update(message, name, count) {
+    MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("mydb");
+        var myobj = { name: name, count: count };
+        dbo.collection("people").updateOne({ name: name }, myobj, async function(err, res) {
+            if (err) throw err;
+            message.channel.send(`${name} tzad fi lista`);
             await db.close();
         });
     });
@@ -95,7 +125,7 @@ function play(connection, message) {
             searchsongurl(message, server.queue[0]);
             play(connection, message);
         } else {
-            sendMessage(message, "ma3adach fama songs fil queue, hani 5rajet 3asba 3ala rasek");
+            sendMessage(message, "ma3adach fama songs fil queue, hani 5rajet");
             //message.channel.send('ma3adach fama songs fil queue, hani 5arej 3asba 3ala rasek');
             iamin = 'NO';
             message.guild.voice.connection.disconnect();
@@ -130,7 +160,7 @@ async function searchsong(message, songname) {
             })
         } catch (ex) { console.log(ex) }
     } catch (ex) {
-        sendMessage(message, "mal9it 7ata 3asba ");
+        sendMessage(message, "mal9it 7ata song ");
         // message.channel.send('mal9it 7ata 3asba ');
     }
 }
@@ -149,7 +179,11 @@ bot.on('message', message => {
             }
             switch (args[0]) {
                 case 'add':
-                    addtodb(message, args[1], parseInt(args[2]));
+                    if (message.member.hasPermission("ADMINISTRATOR")) {
+                        addtodb(message, args[1], parseInt(args[2]));
+                    } else {
+                        sendMessage(message, "makch admin");
+                    }
                     break;
                 case 'leaderBoard':
                     leaderBoard(message);
