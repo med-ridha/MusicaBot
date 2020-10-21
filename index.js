@@ -15,7 +15,7 @@ async function checkindb() {
         MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw err;
             var dbo = db.db("mydb");
-            dbo.collection("songid").find({}).toArray(async function(err, result) {
+            dbo.collection("people").find({}).toArray(async function(err, result) {
                 if (err) throw err;
                 console.log(result);
 
@@ -26,7 +26,7 @@ async function checkindb() {
     })
 }
 async function testdb() {
-    var promise = await checkindb(videoID, "video", downladoMode);
+    var promise = await checkindb();
     promise.then(async function(result) {
         console.log("done");
     });
