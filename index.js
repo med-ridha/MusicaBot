@@ -55,7 +55,7 @@ async function addtodb(message, name, count) {
                     console.log("1 document updated");
 
                 });
-                await db.close();
+
 
             } else {
                 var myobj = { name: name, count: count };
