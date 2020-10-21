@@ -11,8 +11,8 @@ const prefix = '+';
 var servers = {};
 
 function Comparator(a, b) {
-    if (a[2] < b[2]) return -1;
-    if (a[2] > b[2]) return 1;
+    if (a[2].count < b[2].count) return -1;
+    if (a[2].count > b[2].count) return 1;
     return 0;
 }
 async function affichedb() {
@@ -22,8 +22,9 @@ async function affichedb() {
         var dbo = db.db("mydb");
         dbo.collection("people").find({}).toArray(async function(err, result) {
             if (err) throw err;
-            result2 = result.sort(Comparator);
-            console.log(result2);
+
+            result = result.sort(Comparator);
+            console.log(result);
 
             await db.close();
         });
