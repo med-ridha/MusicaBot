@@ -11,7 +11,7 @@ const prefix = '+';
 var servers = {};
 
 async function listDatabases(client) {
-    const col = client.db(mydb).collection('people');
+    const col = client.db('mydb').collection('people');
 
     console.log(col.find({}));
 };
