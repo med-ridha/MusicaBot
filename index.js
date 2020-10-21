@@ -16,7 +16,7 @@ function Comparator(a, b) {
     if (a[1] > b[1]) return 1;
     return 0;
 }
-async function leaderBoard() {
+async function leaderBoard(message) {
 
     MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
         if (err) throw err;
@@ -31,7 +31,7 @@ async function leaderBoard() {
             people = people.sort(Comparator);
             people.reverse()
             for (i = 0; i < people.length; i++) {
-                console.log(`${i} : ${people[i]}`);
+                message.channel.send(`${i} : ${people[i]}`);
             }
 
             await db.close();
@@ -39,10 +39,7 @@ async function leaderBoard() {
     });
 
 }
-async function testdb() {
-    leader();
 
-}
 
 bot.on('ready', () => {
     console.log('this bot is online');
@@ -139,7 +136,7 @@ bot.on('message', message => {
             }
             switch (args[0]) {
                 case 'leaderBoard':
-                    leaderBoard();
+                    leaderBoard(message);
                     break;
                 case 'o5rejnayek':
                     iamin = 'NO';
