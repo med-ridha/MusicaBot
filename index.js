@@ -41,7 +41,7 @@ async function leaderBoard(message) {
 }
 
 async function addtodb(message, name, count) {
-    MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+    MongoClient.connect(uri, { useUnifiedTopology: true }, function(err, db) {
         if (err) throw err;
         var dbo = db.db("mydb");
         var myobj = { name: name, count: count };
