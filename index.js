@@ -29,6 +29,7 @@ async function leaderBoard() {
 
             }
             people = people.sort(Comparator);
+            people.reverse()
             for (i = 0; i < people.length; i++) {
                 console.log(`${i} : ${people[i]}`);
             }
