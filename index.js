@@ -25,7 +25,8 @@ async function affichedb() {
             if (err) throw err;
             var i = 0;
             for (i = 0; i < result.length; i++) {
-                people[i] = result[i];
+                people = result[i].name;
+                people = result[i].count;
             }
 
             console.log(people);
