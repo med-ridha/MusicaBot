@@ -4,17 +4,16 @@ const solenolyrics = require("solenolyrics");
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
-//const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
 const uri = process.env.MONGOD_URL;
 const client = new MongoClient(uri);
 const prefix = '+';
 var servers = {};
-async function listDatabases(client) {
-    databasesList = await client.db().admin().listDatabases();
 
-    console.log("Databases:");
-    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+async function listDatabases(client) {
+    const col = client.db(mydb).collection('people');
+
+    console.log(col.find({}));
 };
 async function test() {
     try {
@@ -34,22 +33,7 @@ async function test() {
 test().catch(console.error);
 
 
-/*mongoose.connect(process.env.MONGOD_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
 
-mongoose.connection.on('connected', () => {
-    console.log("Mongoose is connected");
-})
-
-mongoose.model('people', {
-    name: String,
-    count: 0
-});
-mongoose.model('people').find(function(err, res) {
-    console.log(res);
-})*/
 bot.on('ready', () => {
     console.log('this bot is online');
 });
