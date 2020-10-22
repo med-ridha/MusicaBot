@@ -188,7 +188,7 @@ bot.on('message', message => {
                         sendMessage(message, "makch admin");
                     }
                     break;
-                case 'leaderBoard':
+                case 'leaderboard':
                     leaderBoard(message);
                     people = [];
                     break;
