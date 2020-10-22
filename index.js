@@ -168,7 +168,7 @@ bot.on('message', message => {
             if (args[1] && args[0] === '7ot' || args[1] && args[0] === 'lyrics') {
                 songname = message2.substring(args[0].length + 2, message.length);
             }
-            switch (args[0]) {
+            switch (args[0].toLowerCase()) {
                 case 'add':
                     if (!args[1]) {
                         message.channel.send("zid el esm wel count");
