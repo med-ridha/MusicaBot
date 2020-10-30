@@ -105,7 +105,7 @@ async function searchsongurl(message, x) {
 }
 
 function play(connection, message) {
-    //connection.voice.setSelfDeaf(true);
+    connection.voice.setSelfDeaf(true);
     var server = servers[message.guild.id];
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
     dispatcher.on("finish", () => {
@@ -140,11 +140,11 @@ async function searchsong(message, songname) {
         try {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
 
-                /* if (message.guild.voice.connection.dispatcher) {
-                     message.channel.send('Queued ' + r.title);
+                if (message.guild.voice.connection.dispatcher) {
+                    message.channel.send('Queued ' + r.title);
 
-                     return;
-                 }*/
+                    return;
+                }
                 message.channel.send('playing ' + r.title);
                 play(connection, message);
                 console.log(server);
