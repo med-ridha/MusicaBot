@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
-const search = new YouTube("AIzaSyAWhTEts9l3_v9cFGfJmMbr00s9uM_lfu0");
+const search = new YouTube(process.env.apiKey);
 var servers = {};
 
 async function searchsongurl(message, x) {

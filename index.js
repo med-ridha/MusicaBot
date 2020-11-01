@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const prefix = "+";
 const playsong = require("./commands/songcommands.js");
-bot.login("NzE2NTg4NjA4NjEzNzc3NDA5.XtN9Mw.Tf3yq8iDvfiZ3PDDvNKkxSkiQ3s");
+bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("this Bot is ready");
 })
