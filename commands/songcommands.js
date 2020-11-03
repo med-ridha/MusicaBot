@@ -57,6 +57,35 @@ async function searchsong(message, songname) {
     }
 }
 
+async function getPlaylist(message, songname) {
+    server = servers[message.guild.id];
+    const playlist = await search.getPlaylist(songname);
+    await playlist.fetchVideos(15);
+    let videos = playlist.videos;
+    let queue = []
+    videos.forEach(element => {
+        queue.push(element.url);
+    });
+    console.log(queue);
+    if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+        if (message.guild.voice.connection.dispatcher) {
+            queue.forEach(element => {
+                server.queue.push(element);
+            });
+
+            message.channel.send('Queued ' + songname);
+            console.log(server);
+        } else {
+            server.queue = [];
+            server.queue = queue;
+            message.channel.send('playing ' + server.queue[0]);
+            play(connection, message);
+            console.log(server);
+        }
+    })
+
+}
+
 module.exports.play = async function(message, songname) {
 
     if (!servers[message.guild.id]) servers[message.guild.id] = {
@@ -64,22 +93,26 @@ module.exports.play = async function(message, songname) {
     }
     var server = servers[message.guild.id];
     if (songname.includes("https://www.youtube.com/")) {
-        if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-            if (message.guild.voice.connection.dispatcher) {
-                server.queue.push(songname);
-                message.channel.send('Queued ' + songname);
-                console.log(server);
-            } else {
-                server.queue = [];
-                server.queue.push(songname);
-                message.channel.send('playing ' + server.queue[0]);
-                play(connection, message);
-                console.log(server);
-            }
-        })
-
+        if (songname.includes("&list")) {
+            getPlaylist(message, songname);
+        } else {
+            if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+                if (message.guild.voice.connection.dispatcher) {
+                    server.queue.push(songname);
+                    message.channel.send('Queued ' + songname);
+                    console.log(server);
+                } else {
+                    server.queue = [];
+                    server.queue.push(songname);
+                    message.channel.send('playing ' + server.queue[0]);
+                    play(connection, message);
+                    console.log(server);
+                }
+            })
+        }
         return;
     }
+
     searchsong(message, songname);
 }
 module.exports.o5rej = async function(message) {
