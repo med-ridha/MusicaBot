@@ -12,6 +12,7 @@ function play(connection, message) {
 
     var server = servers[message.guild.id];
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
+    console.log(dispatcher);
     dispatcher.on("finish", () => {
         server.queue.shift();
         console.log(server);
