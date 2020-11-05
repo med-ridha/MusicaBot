@@ -59,7 +59,7 @@ async function searchsong(message, songname) {
 async function getPlaylist(message, songname) {
     server = servers[message.guild.id];
     const playlist = await search.getPlaylist(songname);
-    var videos = await playlist.fetchVideos(0);
+    var videos = await playlist.fetchVideos();
     let queue = []
     videos.forEach(element => {
         queue.push(element.url);
