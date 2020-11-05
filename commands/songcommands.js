@@ -65,6 +65,7 @@ async function getPlaylist(message, songname) {
     let queue = []
     videos.forEach(element => {
         queue.push(element.url);
+        console.log(element.title);
     });
     console.log(queue);
     if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
