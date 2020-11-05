@@ -11,7 +11,6 @@ async function searchsongurl(message, x) {
 async function play(connection, message) {
     var server = servers[message.guild.id];
     dispatcher = await connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
-    console.log(dispatcher);
     dispatcher.on("finish", () => {
         server.queue.shift();
         console.log(server);
@@ -60,8 +59,7 @@ async function searchsong(message, songname) {
 async function getPlaylist(message, songname) {
     server = servers[message.guild.id];
     const playlist = await search.getPlaylist(songname);
-    await playlist.fetchVideos(15);
-    let videos = playlist.videos;
+    var videos = await playlist.fetchVideos(0);
     let queue = []
     videos.forEach(element => {
         queue.push(element.url);
