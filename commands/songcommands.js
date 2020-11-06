@@ -94,7 +94,7 @@ module.exports.play = async function(message, songname) {
     }
     var server = servers[message.guild.id];
     if (songname.includes("https://www.youtube.com/")) {
-        if (songname.includes("&list")) {
+        if (songname.includes("&list") || songname.includes("playlist")) {
             getPlaylist(message, songname);
         } else {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
