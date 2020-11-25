@@ -153,3 +153,12 @@ module.exports.aadi = async function(message) {
         message.channel.send("da5alni fi room 9bal");
     }
 }
+
+module.exports.aawed = async function(message) {
+    var server = servers[message.guild.id];
+    try {
+        server.queue[0].unshift(server.queue[0]);
+    } catch (ex) {
+        message.channel.send("mafama chay bach n3awdou");
+    }
+}

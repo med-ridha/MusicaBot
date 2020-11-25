@@ -57,6 +57,13 @@ bot.on('message', function(message) {
                     }
                     playsong.aadi(message);
                     break;
+                case '3awed':
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room 9bal");
+                        return;
+                    }
+                    playsong.aawed(message);
+                    break;
             }
         }
     }
