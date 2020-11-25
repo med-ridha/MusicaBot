@@ -133,16 +133,17 @@ module.exports.o5rej = async function(message) {
 
 module.exports.a9ef = async function(message) {
     try {
-        x = await dispatcher.pause();
-        console.log(x);
+        await dispatcher.pause();
+
     } catch (ex) {
         message.channel.send("da5alni fi room 9bal");
     }
 }
 module.exports.kamel = async function(message) {
     try {
-        x = await dispatcher.resume();
-        console.log(x);
+        dispatcher.resume();
+        dispatcher.pause();
+        dispatcher.resume();
     } catch (ex) {
         message.channel.send("da5alni fi room 9bal");
     }
