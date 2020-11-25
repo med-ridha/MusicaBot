@@ -140,7 +140,8 @@ module.exports.a9ef = async function(message) {
 }
 module.exports.kamel = async function(message) {
     try {
-        dispatcher.resume();
+        x = await dispatcher.resume();
+        console.log(x);
     } catch (ex) {
         message.channel.send("da5alni fi room 9bal");
     }
