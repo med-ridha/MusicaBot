@@ -133,7 +133,8 @@ module.exports.o5rej = async function(message) {
 
 module.exports.a9ef = async function(message) {
     try {
-        dispatcher.pause();
+        x = await dispatcher.pause();
+        console.log(x);
     } catch (ex) {
         message.channel.send("da5alni fi room 9bal");
     }
