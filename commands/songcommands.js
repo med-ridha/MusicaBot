@@ -157,7 +157,7 @@ module.exports.aadi = async function(message) {
 module.exports.aawed = async function(message) {
     var server = servers[message.guild.id];
     try {
-        server.queue[0].unshift(server.queue[0]);
+        server.queue.unshift(server.queue[0]);
     } catch (ex) {
         message.channel.send("mafama chay bach n3awdou");
     }
