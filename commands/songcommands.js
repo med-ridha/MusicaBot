@@ -44,7 +44,7 @@ async function searchsong(message, songname) {
                     console.log(server);
                 } else {
                     server.queue = [];
-                    await server.queue.push(r.url);
+                    server.queue.push(r.url);
                     message.channel.send('playing ' + r.title);
                     play(connection, message);
                     console.log(server);
