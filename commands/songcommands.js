@@ -92,7 +92,7 @@ module.exports.play = async function(message, songname) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
-    message.channel.send(servers[message.guild.id]);
+    console.log(servers[message.guild.id]);
     var server = await servers[message.guild.id];
     if (songname.includes("https://www.youtube.com/")) {
         if (songname.includes("&list") || songname.includes("playlist")) {
