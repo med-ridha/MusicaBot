@@ -8,6 +8,11 @@ async function searchsongurl(message, x) {
     message.channel.send('playing ' + b.title);
 }
 
+async function searchsongurl2(message, x) {
+    let b = await search.getVideo(x);
+    message.channel.send(b.title + " placed infront of the queue");
+}
+
 async function play(connection, message) {
     var server = await servers[message.guild.id];
     dispatcher = await connection.play(ytdl(server.queue[0], { quality: 'highestaudio', }));
@@ -160,7 +165,7 @@ module.exports.aawed = async function(message) {
     var server = servers[message.guild.id];
     try {
         server.queue.unshift(server.queue[0]);
-        searchsongurl(message, server.queue[0]);
+        searchsongurl2(message, server.queue[0]);
     } catch (ex) {
         message.channel.send("mafama chay bach n3awdou");
     }
