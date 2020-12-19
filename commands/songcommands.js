@@ -170,3 +170,26 @@ module.exports.aawed = async function(message) {
         message.channel.send("mafama chay bach n3awdou");
     }
 }
+
+module.exports.ya39oubi = async function(message) {
+    if (!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+    }
+    songname = "https://www.youtube.com/watch?v=da7rZNK4SM0&has_verified=1";
+    var server = await servers[message.guild.id];
+    if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+        if (message.guild.voice.connection.dispatcher) {
+            server.queue.push(songname);
+            message.channel.send('Queued ' + songname);
+            console.log(server);
+        } else {
+            server.queue = [];
+            server.queue.push(songname);
+            message.channel.send('playing ' + server.queue[0]);
+            play(connection, message);
+            console.log(server);
+        }
+    })
+
+
+}

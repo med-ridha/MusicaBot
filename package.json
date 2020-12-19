@@ -13,6 +13,7 @@
         "@discordjs/opus": "^0.3.3",
         "discord.js": "^12.5.1",
         "ffmpeg-static": "^4.2.7",
+        "moment": "^2.29.1",
         "mongodb": "^3.6.3",
         "node-pre-gyp": "^0.16.0",
         "popyt": "^4.2.0",
