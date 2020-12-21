@@ -71,7 +71,8 @@ bot.on('message', function(message) {
                     }
                     playsong.ya39oubi(message);
                     break;
-
+                case 'info':
+                    playsong.info(Discord, message, songname);
             }
         }
     }

@@ -190,6 +190,24 @@ module.exports.ya39oubi = async function(message) {
             console.log(server);
         }
     })
+}
 
+module.exports.info = async function(Discord, message, songname) {
+    if (server.queue[0] && songname === undefined) {
+        let video = await search.getVideo(server.queue[0]);
+    } else {
+        message.channel.send("song is missing");
+        return;
+    }
+    if (songname) {
+        let video = await search.getVideo(songname);
+    }
 
+    let embed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(video.title)
+        .setUrl(video.url)
+        .setAuthor(video.channelId)
+        .setThumbnail(video.thumbnails);
+    message.channel.send(embed);
 }
