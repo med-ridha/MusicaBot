@@ -77,6 +77,24 @@ bot.on('message', function(message) {
                 case 'info':
                     playsong.info(message, songname);
                     break;
+                case '5arej':
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room 9bal");
+                        return;
+                    }
+                    if (!isNaN(args[1])) {
+                        playsong.kharej(message, args[1]);
+                    } else {
+                        message.channel.send(args[1] + " is not a number");
+                    }
+                    break;
+                case 'queue':
+                    if (!message.member.voice.channel) {
+                        message.channel.send("od5el el room 9bal");
+                        return;
+                    }
+                    playsong.queue(message);
+                    break;
             }
         }
     }

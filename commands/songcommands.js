@@ -2,6 +2,7 @@ const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
 var servers = {};
+currentlyPlaying = null;
 
 async function playing(message, x) {
     let video = await search.getVideo(x);
@@ -33,23 +34,18 @@ async function searchsongurl2(message, x) {
 }
 
 function play(connection, message) {
-
     var server = servers[message.guild.id];
     dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
+    currentlyPlaying = server.queue.shift();
+    console.log(server);
     dispatcher.on("finish", () => {
-        server.queue.shift();
-        console.log(server);
-
         if (server.queue[0]) {
             playing(message, server.queue[0]);
             play(connection, message);
         } else {
-
             message.channel.send('ma3adach fama songs fil queue, hani 5arej');
-
             message.guild.voice.connection.disconnect();
         }
-
     });
 }
 
@@ -57,11 +53,9 @@ async function searchsong(message, songname) {
     var server = servers[message.guild.id];
     let r = await search.getVideo(songname);
     console.log(songname);
-
     try {
         try {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-
                 if (message.guild.voice.connection.dispatcher) {
                     server.queue.push(r.url);
                     Queued(message, r.url);
@@ -71,7 +65,6 @@ async function searchsong(message, songname) {
                     server.queue.push(r.url);
                     playing(message, r.url)
                     play(connection, message);
-                    console.log(server);
                 }
             })
         } catch (ex) { console.log(ex) }
@@ -189,7 +182,7 @@ module.exports.aadi = async function(message) {
 module.exports.aawed = async function(message) {
     var server = servers[message.guild.id];
     try {
-        server.queue.unshift(server.queue[0]);
+        server.queue.unshift(currentlyPlaying);
         searchsongurl2(message, server.queue[0]);
     } catch (ex) {
         message.channel.send("mafama chay bach n3awdou");
@@ -217,11 +210,11 @@ module.exports.ya39oubi = async function(message) {
     })
 }
 module.exports.info = async function(message, songname) {
-    var server = await servers[message.guild.id];
+
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
-
+    var server = await servers[message.guild.id];
     if (songname) {
         var video = await search.getVideo(songname);
     } else {
@@ -258,4 +251,33 @@ module.exports.info = async function(message, songname) {
         ],
     };
     message.channel.send({ embed: songInfo });
+}
+
+module.exports.kharej = async function(message, x) {
+    if (!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+    }
+    var server = servers[message.guild.id];
+    if (x > server.queue.length - 1) {
+        message.channel.send("mafamch song fel pos hadhika");
+    } else {
+        server.queue.splice(x, 1);
+    }
+}
+
+module.exports.queue = async function(message) {
+    if (!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+    }
+    var server = await servers[message.guild.id];
+    if (!server.queue[0]) {
+        message.channel.send("mafamach queue");
+        return;
+    }
+    var i = 0;
+    server.queue.forEach(async element => {
+        let video = await search.getVideo(element)
+        message.channel.send(i + " " + video.title);
+        i++;
+    });
 }
