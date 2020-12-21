@@ -10,6 +10,13 @@ bot.on('ready', () => {
 bot.on('message', function(message) {
     var message2 = message.toString().replace(/\s+/g, ' ');
     let args = message2.substring(prefix.length).split(" ");
+    if (args[1]) {
+        if (args[1].toString().includes("https://www.youtube.com/")) {
+            var songname = args[1];
+        } else {
+            var songname = message2.substring(args[0].length + 2, message.length);
+        }
+    }
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             switch (args[0].toLowerCase()) {
@@ -22,11 +29,7 @@ bot.on('message', function(message) {
                         message.channel.send("lazmek tod5ol el room 9bal");
                         return;
                     }
-                    if (args[1].toString().includes("https://www.youtube.com/")) {
-                        var songname = args[1];
-                    } else {
-                        var songname = message2.substring(args[0].length + 2, message.length);
-                    }
+
                     playsong.play(message, songname);
                     break;
                 case 'o5rej':
@@ -72,7 +75,8 @@ bot.on('message', function(message) {
                     playsong.ya39oubi(message);
                     break;
                 case 'info':
-                    playsong.info(Discord, message, songname);
+                    playsong.info(message, songname);
+                    break;
             }
         }
     }

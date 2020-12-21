@@ -3,26 +3,45 @@ const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
 var servers = {};
 
-async function searchsongurl(message, x) {
-    let b = await search.getVideo(x);
-    message.channel.send('playing ' + b.title);
+async function playing(message, x) {
+    let video = await search.getVideo(x);
+    var song = {
+        color: 0x0099ff,
+        title: "playing " + video.title,
+        url: video.url,
+    };
+    message.channel.send({ embed: song });
 }
 
+async function Queued(message, x) {
+    let video = await search.getVideo(x);
+    var song = {
+        color: 0x0099ff,
+        title: "Queued " + video.title,
+        url: video.url,
+    };
+    message.channel.send({ embed: song });
+}
 async function searchsongurl2(message, x) {
     let b = await search.getVideo(x);
-    message.channel.send(b.title + " placed infront of the queue");
+    var song = {
+        color: 0x0099ff,
+        title: "Queued " + b.title + " and placed in front of the queue",
+        url: b.url,
+    };
+    message.channel.send({ embed: song });
 }
 
-async function play(connection, message) {
-    var server = await servers[message.guild.id];
-    dispatcher = await connection.play(ytdl(server.queue[0], { quality: 'highestaudio', }));
+function play(connection, message) {
 
+    var server = servers[message.guild.id];
+    dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
     dispatcher.on("finish", () => {
         server.queue.shift();
         console.log(server);
 
         if (server.queue[0]) {
-            searchsongurl(message, server.queue[0]);
+            playing(message, server.queue[0]);
             play(connection, message);
         } else {
 
@@ -35,22 +54,22 @@ async function play(connection, message) {
 }
 
 async function searchsong(message, songname) {
-    var server = await servers[message.guild.id];
+    var server = servers[message.guild.id];
     let r = await search.getVideo(songname);
     console.log(songname);
-    message.channel.send('searching ' + songname);
+
     try {
         try {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
 
                 if (message.guild.voice.connection.dispatcher) {
                     server.queue.push(r.url);
-                    message.channel.send('Queued ' + r.title);
+                    Queued(message, r.url);
                     console.log(server);
                 } else {
                     server.queue = [];
                     server.queue.push(r.url);
-                    message.channel.send('playing ' + r.title);
+                    playing(message, r.url)
                     play(connection, message);
                     console.log(server);
                 }
@@ -63,28 +82,38 @@ async function searchsong(message, songname) {
 }
 
 async function getPlaylist(message, songname) {
-    server = await servers[message.guild.id];
+    server = servers[message.guild.id];
     const playlist = await search.getPlaylist(songname);
-    await playlist.fetchVideos(20);
+    await playlist.fetchVideos(25);
     let videos = playlist.videos;
     let queue = []
     videos.forEach(element => {
         queue.push(element.url);
-        console.log(element.title);
     });
     console.log(queue);
-    if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
+    if (!message.member.voice.connection) message.member.voice.channel.join().then(async function(connection) {
         if (message.guild.voice.connection.dispatcher) {
             queue.forEach(element => {
                 server.queue.push(element);
             });
+            var song = {
+                color: 0x0099ff,
+                title: "Queued " + queue.length + " songs",
 
-            message.channel.send('Queued ' + songname);
+            };
+            message.channel.send({ embed: song });
+
             console.log(server);
         } else {
             server.queue = [];
             server.queue = queue;
-            message.channel.send('playing ' + server.queue[0]);
+            await playing(message, server.queue[0])
+            var song = {
+                color: 0x0099ff,
+                title: "And queued " + (queue.length - 1) + " songs",
+
+            };
+            message.channel.send({ embed: song });
             play(connection, message);
             console.log(server);
         }
@@ -97,21 +126,20 @@ module.exports.play = async function(message, songname) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
-    console.log(servers[message.guild.id]);
-    var server = await servers[message.guild.id];
+    var server = servers[message.guild.id];
     if (songname.includes("https://www.youtube.com/")) {
-        if (songname.includes("&list") || songname.includes("playlist")) {
+        if (songname.includes("list")) {
             getPlaylist(message, songname);
         } else {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
                 if (message.guild.voice.connection.dispatcher) {
                     server.queue.push(songname);
-                    message.channel.send('Queued ' + songname);
+                    Queued(message, songname);
                     console.log(server);
                 } else {
                     server.queue = [];
                     server.queue.push(songname);
-                    message.channel.send('playing ' + server.queue[0]);
+                    playing(message, server.queue[0]);
                     play(connection, message);
                     console.log(server);
                 }
@@ -137,16 +165,13 @@ module.exports.o5rej = async function(message) {
 
 module.exports.a9ef = async function(message) {
     try {
-        await dispatcher.pause();
-
+        dispatcher.pause();
     } catch (ex) {
         message.channel.send("da5alni fi room 9bal");
     }
 }
 module.exports.kamel = async function(message) {
     try {
-        dispatcher.resume();
-        dispatcher.pause();
         dispatcher.resume();
     } catch (ex) {
         message.channel.send("da5alni fi room 9bal");
@@ -191,24 +216,46 @@ module.exports.ya39oubi = async function(message) {
         }
     })
 }
-
-module.exports.info = async function(Discord, message, songname) {
-    var server = servers[message.guild.id];
-    if (server.queue[0] && songname === undefined) {
-        let video = await search.getVideo(server.queue[0]);
-    } else {
-        message.channel.send("song is missing");
-        return;
+module.exports.info = async function(message, songname) {
+    var server = await servers[message.guild.id];
+    if (!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
     }
+
     if (songname) {
-        let video = await search.getVideo(songname);
+        var video = await search.getVideo(songname);
+    } else {
+        if (server.queue[0]) {
+            var video = await search.getVideo(server.queue[0]);
+        } else {
+            message.channel.send("song is missing");
+            return;
+        }
     }
 
-    let embed = new Discord.MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle(video.title)
-        .setUrl(video.url)
-        .setAuthor(video.channelId)
-        .setThumbnail(video.thumbnails);
-    message.channel.send(embed);
+    var songInfo = {
+        color: 0x0099ff,
+        title: video.title,
+        url: video.url,
+        thumbnail: {
+            url: video.thumbnails.high.url
+        },
+        fields: [{
+                name: 'duration',
+                value: video._length.hours + ":" + video._length.minutes + ":" + video._length.seconds,
+                inline: true,
+            },
+            {
+                name: 'views',
+                value: video.views,
+                inline: true,
+            },
+            {
+                name: "likes / dislikes",
+                value: video.likes + "/" + video.dislikes,
+                inline: false,
+            },
+        ],
+    };
+    message.channel.send({ embed: songInfo });
 }
