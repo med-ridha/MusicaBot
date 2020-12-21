@@ -193,6 +193,7 @@ module.exports.ya39oubi = async function(message) {
 }
 
 module.exports.info = async function(Discord, message, songname) {
+    var server = servers[message.guild.id];
     if (server.queue[0] && songname === undefined) {
         let video = await search.getVideo(server.queue[0]);
     } else {
