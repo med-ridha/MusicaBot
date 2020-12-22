@@ -39,11 +39,11 @@ function play(connection, message) {
     currentlyPlaying = server.queue.shift();
     console.log(server);
     dispatcher.on("finish", () => {
-        currentlyPlaying = null;
         if (server.queue[0]) {
             playing(message, server.queue[0]);
             play(connection, message);
         } else {
+            currentlyPlaying = null;
             message.channel.send('ma3adach fama songs fil queue, hani 5arej');
             message.guild.voice.connection.disconnect();
         }
@@ -149,6 +149,7 @@ module.exports.o5rej = async function(message) {
         if (message.guild.voice.connection) {
             message.channel.send("hani 5arej");
             message.guild.voice.connection.disconnect();
+            currentlyPlaying = null;
         } else {
             message.channel.send("da5alni fi room 9bal");
         }
