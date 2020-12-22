@@ -39,6 +39,7 @@ function play(connection, message) {
     currentlyPlaying = server.queue.shift();
     console.log(server);
     dispatcher.on("finish", () => {
+        currentlyPlaying = null;
         if (server.queue[0]) {
             playing(message, server.queue[0]);
             play(connection, message);
@@ -211,15 +212,12 @@ module.exports.ya39oubi = async function(message) {
 }
 module.exports.info = async function(message, songname) {
 
-    if (!servers[message.guild.id]) servers[message.guild.id] = {
-        queue: []
-    }
-    var server = await servers[message.guild.id];
+
     if (songname) {
         var video = await search.getVideo(songname);
     } else {
-        if (server.queue[0]) {
-            var video = await search.getVideo(server.queue[0]);
+        if (currentlyPlaying !== null) {
+            var video = await search.getVideo(currentlyPlaying);
         } else {
             message.channel.send("song is missing");
             return;
@@ -258,6 +256,10 @@ module.exports.kharej = async function(message, x) {
         queue: []
     }
     var server = servers[message.guild.id];
+    if (x.toLowerCase() === 'all') {
+        server.queue = [];
+        return;
+    }
     if (x > server.queue.length - 1) {
         message.channel.send("mafamch song fel pos hadhika");
     } else {

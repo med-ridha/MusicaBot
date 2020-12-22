@@ -82,7 +82,7 @@ bot.on('message', function(message) {
                         message.channel.send("od5el el room 9bal");
                         return;
                     }
-                    if (!isNaN(args[1])) {
+                    if (!isNaN(args[1]) || args[1].toLowerCase() === 'all') {
                         playsong.kharej(message, args[1]);
                     } else {
                         message.channel.send(args[1] + " is not a number");
