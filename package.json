@@ -18,7 +18,7 @@
         "node-pre-gyp": "^0.16.0",
         "popyt": "^4.2.0",
         "solenolyrics": "^5.0.0",
-        "ytdl-core": "^4.1.0"
+        "ytdl-core": "^4.2.1"
     },
     "engines": {
         "node": ">=12.12"
