@@ -35,7 +35,7 @@ async function searchsongurl2(message, x) {
 
 function play(connection, message) {
     var server = servers[message.guild.id];
-    dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
+    dispatcher = connection.play(ytdl(server.queue[0], { quality: "highestaudio" }));
     currentlyPlaying = server.queue.shift();
     console.log(server);
     dispatcher.on("finish", () => {
