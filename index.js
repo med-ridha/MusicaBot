@@ -25,8 +25,8 @@ bot.on('message', function(message) {
                         color: 0x0099ff,
                         title: "commands",
                         fields: [{
-                            name: '7ot "songname"',
-                            value: 'song name, song link, playlist link',
+                            name: '7ot [song name/song link/playlist link]',
+                            value: 'play song / playlist',
                         }, {
                             name: 'o5rej',
                             value: 'kick the bot',
@@ -50,7 +50,7 @@ bot.on('message', function(message) {
                             value: 'shows the queue',
                         }, {
                             name: 'ya39oubi',
-
+                            value: '😂',
                         }, ],
                     }
                     message.channel.send({ embed: help });
