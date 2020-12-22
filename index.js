@@ -23,7 +23,7 @@ bot.on('message', function(message) {
                 case 'help':
                     var help = {
                         color: 0x0099ff,
-                        title: commands,
+                        title: "commands",
                         fields: [{
                             name: '7ot "songname"',
                             value: 'song name, song link, playlist link',
