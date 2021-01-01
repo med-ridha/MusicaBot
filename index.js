@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const tmi = require('tmi.js');
 const bot = new Discord.Client();
 const prefix = "+";
+keep = null;
+count = 0;
 const playsong = require("./commands/songcommands.js");
 bot.login(process.env.token);
 
@@ -10,7 +12,8 @@ bot.on('ready', () => {
 })
 
 bot.on('message', function(message) {
-    console.log(message);
+    if (count == 0) keep = message;
+    count++;
     var message2 = message.toString().replace(/\s+/g, ' ');
     let args = message2.substring(prefix.length).split(" ");
     if (args[1]) {
@@ -23,6 +26,9 @@ bot.on('message', function(message) {
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             switch (args[0].toLowerCase()) {
+                case 'count':
+                    message.channel.send(count);
+                    break;
                 case 'help':
                     var help = {
                         color: 0x0099ff,
@@ -169,6 +175,6 @@ client.on('message', (channel, tags, message, self) => {
     if (tags.username.toLowerCase() === process.env.thank) {
         client.say(channel, `@${tags.username} thanks for the gifted sub I really appreciate it, sorry I missed it i went to sleep (this is an automated msg. I wrote this script to thank you if i couldn't make it to the stream, it can finally rest now)`);
         client.disconnect()
-
+        keep.channel.send('done!');
     }
 });
