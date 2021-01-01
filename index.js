@@ -10,10 +10,9 @@ bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("this Bot is ready");
     discordChannel = bot.channels.cache.get('744955015642349607');
-    discordChannel.fetchMessages().then(async messages => {
-        console.log(`${messages.size}`);
-
-    });
+    discordChannel.messages.fetch()
+        .then(messages => console.log(`${messages.filter(m => m.author.id === '716588608613777409').size} messages`))
+        .catch(console.error);
 
 })
 
