@@ -1,8 +1,10 @@
 const Discord = require('discord.js');
+const tmi = require('tmi.js');
 const bot = new Discord.Client();
 const prefix = "+";
 const playsong = require("./commands/songcommands.js");
 bot.login(process.env.token);
+
 bot.on('ready', () => {
     console.log("this Bot is ready");
 })
@@ -134,3 +136,37 @@ bot.on('message', function(message) {
         }
     }
 })
+
+
+
+const client = tmi.Client({
+    options: { debug: true, messagesLogLevel: "info" },
+    connection: {
+        reconnect: true,
+        secure: true
+    },
+    identity: {
+        username: process.env.username,
+        password: process.env.oauth
+    },
+    channels: [process.env.username]
+});
+
+client.connect().catch(console.error);
+client.on('connected', () => {
+    console.log('connected');
+});
+client.on('disconnected', () => {
+    console.log('disconnected');
+});
+
+client.on('message', (channel, tags, message, self) => {
+    if (self) {
+        console.log(self);
+        return;
+    }
+    if (tags.username.toLowerCase() === process.env.username) {
+        client.say(channel, `@${tags.username} thanks for the gifted sub I really appreciate it, sorry I missed it i went to sleep (this is an automated msg. I wrote this script to thank you if i couldn't make it to the stream, it can finally rest now)`);
+        client.disconnect()
+    }
+});
