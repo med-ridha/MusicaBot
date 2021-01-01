@@ -10,6 +10,7 @@ bot.on('ready', () => {
 })
 
 bot.on('message', function(message) {
+    console.log(message);
     var message2 = message.toString().replace(/\s+/g, ' ');
     let args = message2.substring(prefix.length).split(" ");
     if (args[1]) {
@@ -168,5 +169,6 @@ client.on('message', (channel, tags, message, self) => {
     if (tags.username.toLowerCase() === process.env.thank) {
         client.say(channel, `@${tags.username} thanks for the gifted sub I really appreciate it, sorry I missed it i went to sleep (this is an automated msg. I wrote this script to thank you if i couldn't make it to the stream, it can finally rest now)`);
         client.disconnect()
+
     }
 });
