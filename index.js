@@ -3,6 +3,7 @@ const tmi = require('tmi.js');
 const bot = new Discord.Client();
 const prefix = "+";
 count = 0;
+lastMessage = null;
 discordChannel = null;
 const playsong = require("./commands/songcommands.js");
 bot.login(process.env.token);
@@ -11,10 +12,9 @@ bot.on('ready', () => {
     console.log("this Bot is ready");
     discordChannel = bot.channels.cache.get('744955015642349607');
     discordChannel.messages.fetch()
-        .then(messages => messages.filter(m => m.author.id === '716588608613777409')
-            .each(message => console.log(message.content)))
+        .then(messages => lastMessage = messages.filter(m => m.author.id === '716588608613777409').first)
         .catch(console.error);
-
+    console.log(lastMessage.content);
 })
 
 bot.on('message', function(message) {
