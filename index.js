@@ -12,9 +12,12 @@ bot.on('ready', () => {
     console.log("this Bot is ready");
     discordChannel = bot.channels.cache.get('744955015642349607');
     discordChannel.messages.fetch()
-        .then(messages => lastMessage = messages.filter(m => m.author.id === '716588608613777409').first)
+        .then((messages) => {
+            lastMessage = messages.filter(m => m.author.id === '716588608613777409').first;
+            console.log(lastMessage.content);
+        })
         .catch(console.error);
-    console.log(lastMessage.content);
+
 })
 
 bot.on('message', function(message) {
