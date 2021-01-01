@@ -149,7 +149,7 @@ const client = tmi.Client({
         username: process.env.username,
         password: process.env.oauth
     },
-    channels: [process.env.username]
+    channels: [process.env.channel]
 });
 
 client.connect().catch(console.error);
@@ -165,7 +165,7 @@ client.on('message', (channel, tags, message, self) => {
         console.log(self);
         return;
     }
-    if (tags.username.toLowerCase() == process.env.username) {
+    if (tags.username.toLowerCase() === process.env.thank) {
         client.say(channel, `@${tags.username} thanks for the gifted sub I really appreciate it, sorry I missed it i went to sleep (this is an automated msg. I wrote this script to thank you if i couldn't make it to the stream, it can finally rest now)`);
         client.disconnect()
     }
