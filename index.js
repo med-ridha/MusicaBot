@@ -174,6 +174,6 @@ client.on('message', (channel, tags, message, self) => {
     if (tags.username.toLowerCase() === process.env.thank) {
         client.say(channel, `@${tags.username} thanks for the gifted sub I really appreciate it, sorry I missed it i went to sleep (this is an automated msg. I wrote this script to thank you if i couldn't make it to the stream, it can finally rest now)`);
         client.disconnect()
-        bot.channels.get('744955015642349607').send('done!!');
+        bot.channels.cache.get('744955015642349607').send('done!!');
     }
 });
