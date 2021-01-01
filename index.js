@@ -10,12 +10,12 @@ bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("this Bot is ready");
     discordChannel = bot.channels.cache.get('744955015642349607');
-
+    console.log(discordChannel.messages.cache.last().content);
 
 })
 
 bot.on('message', function(message) {
-    console.log(message.channel.messages.cache.last());
+    console.log(message.channel.messages.cache.last().content);
     count++;
     var message2 = message.toString().replace(/\s+/g, ' ');
     let args = message2.substring(prefix.length).split(" ");
