@@ -11,6 +11,7 @@ bot.on('ready', () => {
     console.log("this Bot is ready");
     discordChannel = bot.channels.cache.get('744955015642349607');
     discordChannel.send("this bot is on");
+    discordChannel.lastMessage.delete();
 })
 
 bot.on('message', function(message) {
