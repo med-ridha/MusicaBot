@@ -1,33 +1,19 @@
 const Discord = require('discord.js');
-const tmi = require('tmi.js');
+
 const bot = new Discord.Client();
 const prefix = "+";
-count = 0;
-lastMessage = null;
-discordChannel = null;
+
+
 const playsong = require("./commands/songcommands.js");
 bot.login(process.env.token);
 
 bot.on('ready', () => {
     console.log("this Bot is ready");
-    discordChannel = bot.channels.cache.get('744955015642349607');
-    discordChannel.messages.fetch()
-        .then(async(messages) => {
-            lastMessage = await messages.filter(m => m.author.id === '716588608613777409').first().content;
-            console.log(lastMessage);
-        })
-        .catch(console.error);
 
 })
 
 bot.on('message', function(message) {
-    discordChannel.messages.fetch()
-        .then(async(messages) => {
-            lastMessage = await messages.filter(m => m.author.id === '716588608613777409').first().content;
-            console.log(lastMessage);
-        })
-        .catch(console.error);
-    count++;
+
     var message2 = message.toString().replace(/\s+/g, ' ');
     let args = message2.substring(prefix.length).split(" ");
     if (args[1]) {
@@ -40,9 +26,6 @@ bot.on('message', function(message) {
     if (message2.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             switch (args[0].toLowerCase()) {
-                case 'count':
-                    message.channel.send(count);
-                    break;
                 case 'help':
                     var help = {
                         color: 0x0099ff,
@@ -154,45 +137,6 @@ bot.on('message', function(message) {
                     playsong.queue(message);
                     break;
             }
-        }
-    }
-})
-
-
-
-const client = tmi.Client({
-    options: { debug: true, messagesLogLevel: "info" },
-    connection: {
-        reconnect: true,
-        secure: true
-    },
-    identity: {
-        username: process.env.username,
-        password: process.env.oauth
-    },
-    channels: [process.env.channel]
-});
-
-client.connect().catch(console.error);
-client.on('connected', () => {
-    console.log('connected');
-});
-client.on('disconnected', () => {
-    console.log('disconnected');
-});
-
-client.on('message', (channel, tags, message, self) => {
-    if (self) {
-        console.log(self);
-        return;
-    }
-    if (tags.username.toLowerCase() === process.env.thank) {
-
-
-        if (lastMessage !== 'done!!') {
-            client.say(channel, `@${tags.username} thanks for the gifted sub I really appreciate it, sorry I missed it i went to sleep (this is an automated msg. I wrote this script to thank you if i couldn't make it to the stream, it can finally rest now)`);
-
-            discordChannel.send('done!!');
         }
     }
 });
