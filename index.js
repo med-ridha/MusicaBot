@@ -10,8 +10,11 @@ bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("this Bot is ready");
     discordChannel = bot.channels.cache.get('744955015642349607');
-    discordChannel.send("this bot is on");
-    discordChannel.lastMessage.delete();
+    discordChannel.send("this bot is on").then(function(res, err) {
+        if (err) throw (err);
+        discordChannel.lastMessage.delete();
+    });
+
 })
 
 bot.on('message', function(message) {
