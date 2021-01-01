@@ -3,11 +3,14 @@ const tmi = require('tmi.js');
 const bot = new Discord.Client();
 const prefix = "+";
 count = 0;
+discordChannel = null;
 const playsong = require("./commands/songcommands.js");
 bot.login(process.env.token);
 
 bot.on('ready', () => {
     console.log("this Bot is ready");
+    discordChannel = bot.channels.cache.get('744955015642349607');
+    discordChannel.send("this bot is on");
 })
 
 bot.on('message', function(message) {
@@ -172,7 +175,7 @@ client.on('message', (channel, tags, message, self) => {
         return;
     }
     if (tags.username.toLowerCase() === process.env.thank) {
-        let discordChannel = bot.channels.cache.get('744955015642349607');
+
         console.log(discordChannel.lastMessage.content);
         if (discordChannel.lastMessage.content !== 'done!!') {
             client.say(channel, `@${tags.username} thanks for the gifted sub I really appreciate it, sorry I missed it i went to sleep (this is an automated msg. I wrote this script to thank you if i couldn't make it to the stream, it can finally rest now)`);
