@@ -13,8 +13,8 @@ bot.on('ready', () => {
     discordChannel = bot.channels.cache.get('744955015642349607');
     discordChannel.messages.fetch()
         .then((messages) => {
-            lastMessage = messages.filter(m => m.author.id === '716588608613777409').first;
-            console.log(lastMessage.content);
+            console.log(messages.filter(m => m.author.id === '716588608613777409').first);
+
         })
         .catch(console.error);
 
