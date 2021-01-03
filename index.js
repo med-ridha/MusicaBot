@@ -12,7 +12,7 @@ const client = tmi.Client({
         username: process.env.username,
         password: process.env.oauth
     },
-    channels: process.env.channel
+    channels: [process.env.channel]
 });
 
 const playsong = require("./commands/songcommands.js");
