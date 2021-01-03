@@ -151,7 +151,7 @@ bot.on('message', function(message) {
         }
     }
 
-    if ((message.channel.name === 'test') && (message.content.indexOf(`${process.env.channel} is starting a stream right now`) > 0)) {
+    if ((message.channel.name === 'test') && (message.content.indexOf(`${process.env.channel.replace('#','')} is starting a stream right now`) > 0)) {
         client.say(process.env.channel, `Hello friend, how are you today ?`);
     }
 });
