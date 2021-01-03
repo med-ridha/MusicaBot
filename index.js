@@ -3,7 +3,7 @@ const tmi = require('tmi.js');
 const bot = new Discord.Client();
 const prefix = "+";
 const client = tmi.Client({
-    options: { debug: false, messagesLogLevel: "info" },
+    options: { debug: true, messagesLogLevel: "info" },
     connection: {
         reconnect: false,
         secure: true
@@ -155,3 +155,15 @@ bot.on('message', function(message) {
         client.say(process.env.channel, `Hello friend, how are you today ?`);
     }
 });
+
+client.connect().catch(console.error);
+client.on('connected', () => {
+    channelss.forEach(element => {
+        console.log(`connected to ${element}`)
+    });
+})
+client.on('disconnected', () => {
+    channelss.forEach(element => {
+        console.log(`disconneted from ${element}`)
+    });
+})
