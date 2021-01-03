@@ -158,12 +158,8 @@ bot.on('message', function(message) {
 
 client.connect().catch(console.error);
 client.on('connected', () => {
-    channelss.forEach(element => {
-        console.log(`connected to ${element}`)
-    });
+    console.log(`connected to ${process.env.channel}`)
 })
 client.on('disconnected', () => {
-    channelss.forEach(element => {
-        console.log(`disconneted from ${element}`)
-    });
+    console.log(`disconnected from ${process.env.channel}`)
 })
