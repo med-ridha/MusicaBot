@@ -1,13 +1,27 @@
 const Discord = require('discord.js');
+const tmi = require('tmi.js');
 const bot = new Discord.Client();
 const prefix = "+";
+const client = tmi.Client({
+    options: { debug: true, messagesLogLevel: "info" },
+    connection: {
+        reconnect: false,
+        secure: true
+    },
+    identity: {
+        username: process.env.username,
+        password: process.env.oauth
+    },
+    channels: [process.env.channel]
+});
+
 const playsong = require("./commands/songcommands.js");
 bot.login(process.env.token);
 
 bot.on('ready', () => {
     console.log("this Bot is ready");
 
-});
+})
 
 bot.on('message', function(message) {
 
@@ -137,4 +151,15 @@ bot.on('message', function(message) {
         }
     }
 
+    if ((message.channel.name === 'test') && (message.content.indexOf(`${process.env.channel.replace('#','')} is starting a stream right now`) > 0)) {
+        client.say(process.env.channel, `Hello friend, how are you today ?`);
+    }
 });
+
+client.connect().catch(console.error);
+client.on('connected', () => {
+    console.log(`connected to ${process.env.channel}`)
+})
+client.on('disconnected', () => {
+    console.log(`disconnected from ${process.env.channel}`)
+})
