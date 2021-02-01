@@ -7,7 +7,7 @@ bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("this Bot is ready");
 
-})
+});
 
 bot.on('message', function(message) {
 
