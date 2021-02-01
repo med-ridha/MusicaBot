@@ -19,7 +19,7 @@
         "popyt": "^4.2.0",
         "solenolyrics": "^5.0.0",
         "tmi.js": "^1.7.1",
-        "ytdl-core": "^4.2.1"
+        "ytdl-core": "^4.4.5"
     },
     "engines": {
         "node": ">=12.12"
