@@ -1,10 +1,8 @@
 const Discord = require('discord.js');
-
+const playsong = require("./commands/songcommands.js");
 const bot = new Discord.Client();
 const prefix = "+";
 
-
-const playsong = require("./commands/songcommands.js");
 bot.login(process.env.token);
 
 bot.on('ready', () => {
@@ -14,16 +12,16 @@ bot.on('ready', () => {
 
 bot.on('message', function(message) {
 
-    var message2 = message.toString().replace(/\s+/g, ' ');
-    let args = message2.substring(prefix.length).split(" ");
+    var formatedMessage = message.toString().replace(/\s+/g, ' ');
+    let args = formatedMessage.substring(prefix.length).split(" ");
     if (args[1]) {
         if (args[1].toString().includes("https://www.youtube.com/")) {
             var songname = args[1];
         } else {
-            var songname = message2.substring(args[0].length + 2, message.length);
+            var songname = formatedMessage.substring(args[0].length + 2, message.length);
         }
     }
-    if (message2.substring(0, 1) === prefix) {
+    if (formatedMessage.substring(0, 1) === prefix) {
         if (message.channel.name === 'bot') {
             switch (args[0].toLowerCase()) {
                 case 'help':
@@ -140,5 +138,5 @@ bot.on('message', function(message) {
         }
     }
 
-    
+
 });
