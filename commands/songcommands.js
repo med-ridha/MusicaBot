@@ -302,9 +302,12 @@ async function getList(message) {
         message.channel.send("mafamach queue");
         return;
     }
-    await server.queue.forEach(async element => {
+    promise = await server.queue.forEach(async element => {
         let video = await search.getVideo(element)
         msg += '\n' + video.title;
     });
+
+    let result = await promise;
+    console.log(result)
     return Promise.resolve(msg);
 }
