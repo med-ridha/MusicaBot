@@ -303,7 +303,7 @@ async function getList(message) {
         message.channel.send("mafamach queue");
         return;
     }
-    server.queue.forEach(async element => {
+    await server.queue.forEach(async element => {
         let video = await search.getVideo(element)
         msg += '\n' + video.title;
     });
