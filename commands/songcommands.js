@@ -269,7 +269,7 @@ module.exports.kharej = async function(message, x) {
         server.queue.splice(x, 1);
     }
 }
-var msg = '';
+
 module.exports.queue = async function(message) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
@@ -301,6 +301,7 @@ module.exports.queue = async function(message) {
 
 }
 async function getList() {
+    var msg;
     server.queue.forEach(async element => {
         let video = await search.getVideo(element)
         msg += video.title + '\n';
