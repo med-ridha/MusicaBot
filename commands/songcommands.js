@@ -269,30 +269,7 @@ module.exports.kharej = async function(message, x) {
         server.queue.splice(x, 1);
     }
 }
-module.exports.queue = async function(message) {
-
-    // server.queue.forEach(async element => {
-    //     let video = await search.getVideo(element)
-    //     message.channel.send(i+1 + " " + video.title);
-    //     i++;
-    // });
-
-
-
-    getList(message).then(result => {
-        if (result.length < 2000) {
-            message.channel.send(result);
-        } else {
-            server.queue.forEach(async element => {
-                let video = await search.getVideo(element)
-                message.channel.send(video.title);
-
-            });
-        }
-    })
-}
-
-async function getList(message) {
+module.exports.queue = function(message) {
     var msg = 'a';
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
@@ -302,12 +279,26 @@ async function getList(message) {
         message.channel.send("mafamach queue");
         return;
     }
-    promise = await server.queue.forEach(async element => {
+
+    // server.queue.forEach(async element => {
+    //     let video = await search.getVideo(element)
+    //     message.channel.send(i+1 + " " + video.title);
+    //     i++;
+    // });
+
+    server.queue.forEach(async element => {
         let video = await search.getVideo(element)
         msg += '\n' + video.title;
     });
 
-    let result = await promise;
-    console.log(result)
-    return Promise.resolve(msg);
+    if (msg.length < 2000) {
+        message.channel.send(msg);
+    } else {
+        server.queue.forEach(async element => {
+            let video = await search.getVideo(element)
+            message.channel.send(video.title);
+
+        });
+    }
+
 }
