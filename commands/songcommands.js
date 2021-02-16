@@ -277,11 +277,7 @@ module.exports.queue = async function(message) {
     //     i++;
     // });
 
-    server.queue.forEach(async element => {
-        let video = await search.getVideo(element)
-        msg += '\n' + video.title;
-        i++;
-    });
+
 
     getList(message).then(result => {
         if (result.length < 2000) {
