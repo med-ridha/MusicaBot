@@ -274,7 +274,7 @@ module.exports.queue = function(message) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
-    var server = await servers[message.guild.id];
+    var server = servers[message.guild.id];
     if (!server.queue[0]) {
         message.channel.send("mafamach queue");
         return;
