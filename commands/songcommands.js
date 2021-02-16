@@ -287,11 +287,12 @@ module.exports.queue = async function(message) {
 
     var promise = new Promise(async(resolve, reject) => {
         var msg = 'a'
-        await server.queue.forEach(async element => {
-            let video = await search.getVideo(element)
+        for (var i = 0; i < server.queue.length; i++) {
+            let video = await search.getVideo(server.queue[i])
             msg += video.title + '\n';
-        });
-        resolve(msg);
+        }
+        if (i == server.queue.length)
+            resolve(msg);
     })
 
     promise.then(res => {
