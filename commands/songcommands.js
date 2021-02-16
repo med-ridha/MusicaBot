@@ -282,12 +282,11 @@ module.exports.queue = async function(message) {
     getList(message).then(result => {
         if (result.length < 2000) {
             message.channel.send(result);
-
         } else {
             server.queue.forEach(async element => {
                 let video = await search.getVideo(element)
-                message.channel.send(i + 1 + " " + video.title);
-                i++;
+                message.channel.send(video.title);
+
             });
         }
     })
