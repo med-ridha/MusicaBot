@@ -168,6 +168,8 @@ module.exports.a9ef = async function(message) {
 module.exports.kamel = async function(message) {
     try {
         dispatcher.resume();
+        dispatcher.pause();
+        dispatcher.resume();
     } catch (ex) {
         message.channel.send("da5alni fi room 9bal");
     }
@@ -278,9 +280,24 @@ module.exports.queue = async function(message) {
         return;
     }
     var i = 0;
+    // server.queue.forEach(async element => {
+    //     let video = await search.getVideo(element)
+    //     message.channel.send(i+1 + " " + video.title);
+    //     i++;
+    // });
+    let msg;
     server.queue.forEach(async element => {
         let video = await search.getVideo(element)
-        message.channel.send(i + " " + video.title);
+        msg += '\n' + video.title;
         i++;
     });
+    if (msg.length < 2000)
+        message.channel.send(msg);
+    else {
+        server.queue.forEach(async element => {
+            let video = await search.getVideo(element)
+            message.channel.send(i + 1 + " " + video.title);
+            i++;
+        });
+    }
 }
