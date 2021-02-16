@@ -283,7 +283,7 @@ module.exports.queue = async function(message) {
         i++;
     });
 
-    getList().then(result => {
+    getList(message).then(result => {
         if (result.length < 2000) {
             message.channel.send(result);
 
@@ -297,7 +297,7 @@ module.exports.queue = async function(message) {
     })
 }
 
-async function getList() {
+async function getList(message) {
     var msg = 'a';
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
