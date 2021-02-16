@@ -269,27 +269,24 @@ module.exports.kharej = async function(message, x) {
         server.queue.splice(x, 1);
     }
 }
-
 module.exports.queue = async function(message) {
-    if (!servers[message.guild.id]) servers[message.guild.id] = {
-        queue: []
-    }
-    var server = await servers[message.guild.id];
-    if (!server.queue[0]) {
-        message.channel.send("mafamach queue");
-        return;
-    }
-    var i = 0;
+
     // server.queue.forEach(async element => {
     //     let video = await search.getVideo(element)
     //     message.channel.send(i+1 + " " + video.title);
     //     i++;
     // });
 
-    getList().then(msg => {
-        if (msg.length < 2000) {
-            message.channel.send(msg);
-            msg = '';
+    server.queue.forEach(async element => {
+        let video = await search.getVideo(element)
+        msg += '\n' + video.title;
+        i++;
+    });
+
+    getList().then(result => {
+        if (result.length < 2000) {
+            message.channel.send(result);
+
         } else {
             server.queue.forEach(async element => {
                 let video = await search.getVideo(element)
@@ -298,13 +295,21 @@ module.exports.queue = async function(message) {
             });
         }
     })
-
 }
+
 async function getList() {
-    var msg;
+    var msg = 'a';
+    if (!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+    }
+    var server = await servers[message.guild.id];
+    if (!server.queue[0]) {
+        message.channel.send("mafamach queue");
+        return;
+    }
     server.queue.forEach(async element => {
         let video = await search.getVideo(element)
-        msg += video.title + '\n';
+        msg += '\n' + video.title;
     });
-    return msg;
+    return Promise.resolve(msg);
 }
