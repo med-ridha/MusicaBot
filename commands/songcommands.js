@@ -285,7 +285,7 @@ module.exports.queue = async function(message) {
     //     message.channel.send(i+1 + " " + video.title);
     //     i++;
     // });
-    let msg;
+    var msg;
     server.queue.forEach(async element => {
         let video = await search.getVideo(element)
         msg += '\n' + video.title;
