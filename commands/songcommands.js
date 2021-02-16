@@ -286,8 +286,8 @@ module.exports.queue = async function(message) {
     //     i++;
     // });
 
-    server.queue.forEach(async element => {
-        let video = await search.getVideo(element)
+    server.queue.forEach(element => {
+        let video = search.getVideo(element)
         msg += '\n' + video.title;
         i++;
     });
