@@ -269,7 +269,7 @@ module.exports.kharej = async function(message, x) {
         server.queue.splice(x, 1);
     }
 }
-var msg = '';
+var msg = 'a';
 module.exports.queue = async function(message) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
@@ -286,14 +286,16 @@ module.exports.queue = async function(message) {
     //     i++;
     // });
 
-    server.queue.forEach(element => {
-        let video = search.getVideo(element)
+    server.queue.forEach(async element => {
+        let video = await search.getVideo(element)
         msg += '\n' + video.title;
         i++;
     });
-    if (msg.length < 2000)
+
+    if (msg.length < 2000) {
         message.channel.send(msg);
-    else {
+        msg = 'a';
+    } else {
         server.queue.forEach(async element => {
             let video = await search.getVideo(element)
             message.channel.send(i + 1 + " " + video.title);
