@@ -285,7 +285,7 @@ module.exports.queue = async function(message) {
     //     i++;
     // });
 
-    var promise = new Promise((resolve, reject) => {
+    var promise = new Promise(async(resolve, reject) => {
         var msg = 'a'
         await server.queue.forEach(async element => {
             let video = await search.getVideo(element)
