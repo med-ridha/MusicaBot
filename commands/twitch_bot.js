@@ -45,6 +45,7 @@ client.on('message', (channel, tags, message, self) => {
         activated = true;
     }
     if (tags.username === master && message === '!deactivate') {
+        client.say(mrStreamer, `aight i am out of here`)
         activated = false;
     }
     if (activated) {
