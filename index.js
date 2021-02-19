@@ -1,3 +1,4 @@
+const twitchbot = require('./commands/twitch_bot')
 const Discord = require('discord.js');
 const playsong = require("./commands/songcommands.js");
 const bot = new Discord.Client();
