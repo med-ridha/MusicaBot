@@ -35,7 +35,6 @@ var p = 0;
 var g = 0;
 var spamtheJAM = null;
 var join = false;
-var foundit = false;
 var activated = false;
 client.on('message', (channel, tags, message, self) => {
 
@@ -44,8 +43,7 @@ client.on('message', (channel, tags, message, self) => {
     if (tags.username === master) {
         activated = true;
     }
-    if (tags.username === master && message === '!deactivate') {
-        client.say(mrStreamer, `aight i am out of here`)
+    if (tags.username === master && message.includes(`good night`)) {
         activated = false;
     }
     if (activated) {
@@ -53,6 +51,9 @@ client.on('message', (channel, tags, message, self) => {
         if (!join && tags.username.toLowerCase() === 'streamelements' && message.includes(`Enter by typing "!join"`)) {
             client.say(mrStreamer, `!join`);
             join = true;
+            setTimeout(() => {
+                join = false;
+            }, 60000);
         }
 
         if (message.includes(`it`) && message.includes(`s`) && message.includes(`my`) && (message.includes(`birthday`) || message.includes(`bday`))) {
@@ -61,11 +62,10 @@ client.on('message', (channel, tags, message, self) => {
             }, 3000);
         }
 
-        if (message.includes(`what's poppin`) || message.includes(`whats poppin`)) {
+        if (message.includes(`what's poppin`) || message.includes(`whats poppin`) || message.includes(`wuz poppin`)) {
             setTimeout(() => {
                 client.say(mrStreamer, `@${tags.username} don't mind me just watching`);
-
-            }, 2000);
+            }, 1000);
         }
 
 
@@ -113,17 +113,13 @@ client.on('message', (channel, tags, message, self) => {
             if (message.includes('hahaha') || message.includes('ahahah') || message.includes(`hhhaaa`) || message.includes(`aahahaah`)) {
                 client.say(mrStreamer, `@${tags.username} LUL`)
             }
-            foundit = false;
             emotes.forEach(emote => {
                 if (message.toLowerCase().includes(emote.toLowerCase())) {
-                    foundit = true;
+
                     client.say(mrStreamer, `@${tags.username} ${emote}`);
                     return;
                 }
             })
-            if (!foundit) {
-                client.say(mrStreamer, `@${tags.username} YouDontSay`);
-            }
         }
 
         JAM = ['babyJAM', 'catJAM', `Dance`]
