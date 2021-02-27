@@ -38,8 +38,10 @@ var join = false;
 var activated = false;
 client.on('message', (channel, tags, message, self) => {
 
-    console.log(`<${tags.username}> : ${message}`)
-    if (self) return;
+    if (self) {
+        console.log(`<${tags.username}> : ${message}`);
+        return;
+    }
     if (tags.username === master) {
         activated = true;
     }
