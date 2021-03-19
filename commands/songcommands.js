@@ -52,6 +52,7 @@ function play(connection, message) {
 
 async function searchsong(message, songname) {
     var server = servers[message.guild.id];
+    console.log("this");
     let r = await search.getVideo(songname);
     console.log(songname);
     try {
