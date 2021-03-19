@@ -211,16 +211,22 @@ module.exports.ya39oubi = async function(message) {
     })
 }
 module.exports.info = async function(message, songname) {
-
-
     if (songname) {
-        var video = await search.getVideo(songname);
+        var video = await search.getVideo(songname).catch(console.error);
+        if(!video){
+            message.channel.send(`Item not found!`);
+            return 1;
+        }
     } else {
         if (currentlyPlaying !== null) {
-            var video = await search.getVideo(currentlyPlaying);
+            var video = await search.getVideo(currentlyPlaying).catch(console.error);
+            if(!video){
+                message.channel.send(`Item not found!`);
+                return 1;
+            }
         } else {
             message.channel.send("song is missing");
-            return;
+            return 1;
         }
     }
 
@@ -249,6 +255,7 @@ module.exports.info = async function(message, songname) {
         ],
     };
     message.channel.send({ embed: songInfo });
+    return 0;
 }
 
 module.exports.kharej = async function(message, x) {
