@@ -115,7 +115,6 @@ async function getPlaylist(message, songname) {
 }
 
 module.exports.play = async function(message, songname) {
-try{
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
@@ -140,11 +139,7 @@ try{
     }
 
     searchsong(message, songname);
-}catch(ex){
-    message.channel.send("error");
-    return 1; 
-}
-return 0;
+    return 0;
 }
 module.exports.o5rej = async function(message) {
     try {
