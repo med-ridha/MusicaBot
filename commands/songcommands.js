@@ -52,7 +52,7 @@ function play(connection, message) {
 
 async function searchsong(message, songname) {
     var server = servers[message.guild.id];
-    let r = await search.getVideo(songname).catch(console.error);
+    let r = await search.getVideo(songname).catch(()=>{console.error;return 1;});
     try {
         try {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
