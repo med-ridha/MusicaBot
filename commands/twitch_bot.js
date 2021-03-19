@@ -9,7 +9,7 @@ const mrStreamer = process.env.channel;
 
 
 const client = tmi.Client({
-    options: { debug: true, messagesLogLevel: "info" },
+    options: { debug: false, messagesLogLevel: "info" },
     connection: {
         reconnect: true,
         secure: true

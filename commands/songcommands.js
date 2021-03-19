@@ -116,7 +116,7 @@ async function getPlaylist(message, songname) {
 }
 
 module.exports.play = async function(message, songname) {
-
+try{
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
@@ -139,10 +139,15 @@ module.exports.play = async function(message, songname) {
                 }
             })
         }
-        return;
+        return 0;
     }
 
     searchsong(message, songname);
+}catch(ex){
+    message.channel.send("error");
+    return 1; 
+}
+return 0;
 }
 module.exports.o5rej = async function(message) {
     try {
