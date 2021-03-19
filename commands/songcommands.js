@@ -52,9 +52,7 @@ function play(connection, message) {
 
 async function searchsong(message, songname) {
     var server = servers[message.guild.id];
-    console.log("this");
-    let r = await search.getVideo(songname);
-    console.log(songname);
+    let r = await search.getVideo(songname).catch(console.error);
     try {
         try {
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
@@ -85,7 +83,6 @@ async function getPlaylist(message, songname) {
     videos.forEach(element => {
         queue.push(element.url);
     });
-    console.log(queue);
     if (!message.member.voice.connection) message.member.voice.channel.join().then(async function(connection) {
         if (message.guild.voice.connection.dispatcher) {
             queue.forEach(element => {
@@ -98,7 +95,6 @@ async function getPlaylist(message, songname) {
             };
             message.channel.send({ embed: song });
 
-            console.log(server);
         } else {
             server.queue = [];
             server.queue = queue;
@@ -110,7 +106,6 @@ async function getPlaylist(message, songname) {
             };
             message.channel.send({ embed: song });
             play(connection, message);
-            console.log(server);
         }
     })
 
@@ -130,13 +125,11 @@ try{
                 if (message.guild.voice.connection.dispatcher) {
                     server.queue.push(songname);
                     Queued(message, songname);
-                    console.log(server);
                 } else {
                     server.queue = [];
                     server.queue.push(songname);
                     playing(message, server.queue[0]);
                     play(connection, message);
-                    console.log(server);
                 }
             })
         }
