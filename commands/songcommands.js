@@ -5,7 +5,10 @@ var servers = {};
 currentlyPlaying = null;
 
 async function playing(message, x) {
-    let video = await search.getVideo(x);
+    let video = await search.getVideo(x).catch(console.error);
+    if(!video){
+        return 1;
+    }
     var song = {
         color: 0x0099ff,
         title: "playing " + video.title,
@@ -15,7 +18,10 @@ async function playing(message, x) {
 }
 
 async function Queued(message, x) {
-    let video = await search.getVideo(x);
+    let video = await search.getVideo(x).catch(console.error);
+    if(!video){
+        return 1;
+    }
     var song = {
         color: 0x0099ff,
         title: "Queued " + video.title,
@@ -24,7 +30,10 @@ async function Queued(message, x) {
     message.channel.send({ embed: song });
 }
 async function searchsongurl2(message, x) {
-    let b = await search.getVideo(x);
+    let b = await search.getVideo(x).catch(console.error);
+    if(!video){
+        return 1;
+    }
     var song = {
         color: 0x0099ff,
         title: "Queued " + b.title + " and placed in front of the queue",
