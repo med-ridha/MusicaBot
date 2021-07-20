@@ -1,12 +1,13 @@
 const extra = require('./extra.js')
 const tmi = require('tmi.js');
+const translate = require('translate.js')
 const pickuplines = extra.pickuplines;
 const emotes = extra.emotes;
 const puns = extra.puns;
 const master = process.env.master;
 const username = process.env.username;
 const mrStreamer = process.env.channel;
-
+const channels = [mrStreamer, master]
 
 const client = tmi.Client({
     options: { debug: false, messagesLogLevel: "info" },
@@ -18,7 +19,7 @@ const client = tmi.Client({
         username: master,
         password: process.env.oauth
     },
-    channels: [mrStreamer]
+    channels: channels
 });
 
 client.connect().catch(console.error);
@@ -36,6 +37,10 @@ var g = 0;
 var spamtheJAM = null;
 var join = false;
 var activated = false;
+let messages = [];
+var uniquechatters = [];
+var nexttime = [];
+var t = [];
 client.on('message', (channel, tags, message, self) => {
 
     if (self) {
@@ -49,7 +54,53 @@ client.on('message', (channel, tags, message, self) => {
         activated = false;
     }
     if (activated) {
+        message = message.toString().replace(/\s+/g, ' ');
+        var args = message.split(" ");
+        if(uniquechatters[tags.username] === undefined) uniquechatters[tags.username] = true;
+        if(!message.includes('$translate') && !message.includes('$transto')){
+            messages.push(["@"+tags.username.toLowerCase(), message]);
+        }
 
+        if(messages.length > 60) messages.shift();
+        if (args[0].toLowerCase() === "$translate") {
+            if(uniquechatters[tags.username]){
+                if(args[1]){
+                    messages.reverse();
+                    let msg = "";
+                    if(args[1].indexOf('@') >= 0){
+                        for(let i = 0; i < messages.length; i++){
+                            if(messages[i][0].toLowerCase() === args[1].toLowerCase()){
+                                msg += messages[i][1];
+                                msg += " / "
+                            }
+                        }
+                    }
+                    translate.translate(args, msg).then(trans => {
+                        client.say(mrStreamer, `${trans} @${tags.username}`);
+                    });
+                    uniquechatters[tags.username] = false;
+                    nexttime[tags.username] = 60*2;
+                    t[tags.username] = setInterval(() => { nexttime[tags.username] -= 1}, 1000);
+                    setTimeout(()=>{ uniquechatters[tags.username] = true; clearInterval(t[tags.username]) }, (60000*2))
+                }else{
+                    client.say(mrStreamer, `@${tags.username} $translate [message or @username]`)
+                }
+            }else{
+                client.say(mrStreamer, `@${tags.username} ayo chill, for spamming and rate limiting purposes this ability is on cooldown for you, ${nexttime[tags.username]} seconds remaining`)
+            }
+        }
+
+        if(channel === '#'+master){
+            if(args[0] === '$transto'){
+                if(tags.username.toLowerCase() === master){
+                    translate.translateTo(args).then(msg => {
+                        client.say(mrStreamer, `${msg}`);
+                    });
+                }else{
+                    client.say(master, `@${tags.username} Get Out!`);
+                }
+            }
+        }
         if (!join && tags.username.toLowerCase() === 'streamelements' && message.includes(`Enter by typing "!join"`)) {
             client.say(mrStreamer, `!join`);
             join = true;
@@ -124,13 +175,13 @@ client.on('message', (channel, tags, message, self) => {
             })
         }
 
-        JAM = ['babyJAM', 'catJAM', `Dance`]
-        ph = ``;
+        let JAM = ['babyJAM', 'catJAM', `Dance`]
+        let ph = ``;
 
         if (tags.username === master && message === '!spamtheJAM') {
             spamtheJAM = setInterval(() => {
-                for (i = 0; i < 35; i++) {
-                    pos = Math.floor(Math.random() * JAM.length)
+                for (let i = 0; i < 35; i++) {
+                    var pos = Math.floor(Math.random() * JAM.length)
                     ph += `${JAM[pos]} `
                 }
                 client.say(mrStreamer, ph);
