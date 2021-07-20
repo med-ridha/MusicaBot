@@ -44,9 +44,9 @@ var t = [];
 client.on('message', (channel, tags, message, self) => {
 
     if (self) {
-        console.log(`<${tags.username}> : ${message}`);
         return;
     }
+    console.log(`<${tags.username}> : ${message}`);
     if (tags.username === master) {
         activated = true;
     }
