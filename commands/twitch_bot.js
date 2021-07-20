@@ -1,6 +1,6 @@
 const extra = require('./extra.js')
 const tmi = require('tmi.js');
-const translate = require('translate.js')
+const translate = require('./translate.js')
 const pickuplines = extra.pickuplines;
 const emotes = extra.emotes;
 const puns = extra.puns;
