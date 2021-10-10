@@ -279,7 +279,7 @@ module.exports.queue = async function(message) {
           search.getVideo(server.queue[i]).then(video =>{
             msg += video.title + '\n';
           })
-
+          if (i === server.queue.length)
           resolve(msg);
         }
     })
