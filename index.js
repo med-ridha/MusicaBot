@@ -1,4 +1,3 @@
-const twitchbot = require('./commands/twitch_bot')
 const Discord = require('discord.js');
 const playsong = require("./commands/songcommands.js");
 const bot = new Discord.Client();
@@ -17,7 +16,7 @@ bot.on('message', function(message) {
     let args = formatedMessage.substring(prefix.length).split(" ");
     if (args[1]) {
         if (args[1].toString().includes("https://www.youtube.com/")) {
-            var songname = args[1];
+          var songname = args[1];
         } else {
             var songname = formatedMessage.substring(args[0].length + 2, message.length);
         }
@@ -53,10 +52,7 @@ bot.on('message', function(message) {
                         }, {
                             name: 'queue',
                             value: 'shows the queue',
-                        }, {
-                            name: 'ya39oubi',
-                            value: '😂',
-                        }, ],
+                        } ],
                     }
                     message.channel.send({ embed: help });
                     break;
@@ -106,13 +102,6 @@ bot.on('message', function(message) {
                         return;
                     }
                     playsong.aawed(message);
-                    break;
-                case 'ya39oubi':
-                    if (!message.member.voice.channel) {
-                        message.channel.send("od5el el room 9bal");
-                        return;
-                    }
-                    playsong.ya39oubi(message);
                     break;
                 case 'info':
                     playsong.info(message, songname);

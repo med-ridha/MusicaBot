@@ -1,9 +1,9 @@
 const ytdl = require('ytdl-core');
 const { YouTube } = require('popyt');
 const search = new YouTube(process.env.apiKey);
-var servers = {};
-currentlyPlaying = null;
-
+let servers = {};
+let currentlyPlaying = null;
+let dispatcher = null;
 async function playing(message, x) {
     let video = await search.getVideo(x).catch(console.error);
     if(!video){
@@ -31,7 +31,7 @@ async function Queued(message, x) {
 }
 async function searchsongurl2(message, x) {
     let b = await search.getVideo(x).catch(console.error);
-    if(!video){
+    if(!b){
         return 1;
     }
     var song = {
@@ -43,8 +43,8 @@ async function searchsongurl2(message, x) {
 }
 
 function play(connection, message) {
-    var server = servers[message.guild.id];
-    dispatcher = connection.play(ytdl(server.queue[0], { quality: "highestaudio" }));
+    let server = servers[message.guild.id];
+    let dispatcher = connection.play(ytdl(server.queue[0], { quality: "highestaudio" }));
     currentlyPlaying = server.queue.shift();
     console.log(server);
     dispatcher.on("finish", () => {
@@ -60,7 +60,7 @@ function play(connection, message) {
 }
 
 async function searchsong(message, songname) {
-    var server = servers[message.guild.id];
+    let server = servers[message.guild.id];
     let r = await search.getVideo(songname).catch(console.error);
     if(!r) {
         message.channel.send(`Item not found try different input`);
@@ -87,7 +87,7 @@ async function searchsong(message, songname) {
 }
 
 async function getPlaylist(message, songname) {
-    server = servers[message.guild.id];
+    let server = servers[message.guild.id];
     const playlist = await search.getPlaylist(songname).catch(console.error);
     await playlist.fetchVideos(25);
     let videos = playlist.videos;
@@ -100,7 +100,7 @@ async function getPlaylist(message, songname) {
             queue.forEach(element => {
                 server.queue.push(element);
             });
-            var song = {
+            let song = {
                 color: 0x0099ff,
                 title: "Queued " + queue.length + " songs",
 
@@ -111,7 +111,7 @@ async function getPlaylist(message, songname) {
             server.queue = [];
             server.queue = queue;
             await playing(message, server.queue[0])
-            var song = {
+            let song = {
                 color: 0x0099ff,
                 title: "And queued " + (queue.length - 1) + " songs",
 
@@ -127,7 +127,7 @@ module.exports.play = async function(message, songname) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
-    var server = servers[message.guild.id];
+    let server = servers[message.guild.id];
     if (songname.includes("https://www.youtube.com/")) {
         if (songname.includes("list")) {
             getPlaylist(message, songname);
@@ -190,7 +190,7 @@ module.exports.aadi = async function(message) {
 }
 
 module.exports.aawed = async function(message) {
-    var server = servers[message.guild.id];
+    let server = servers[message.guild.id];
     try {
         server.queue.unshift(currentlyPlaying);
         searchsongurl2(message, server.queue[0]);
@@ -199,36 +199,17 @@ module.exports.aawed = async function(message) {
     }
 }
 
-module.exports.ya39oubi = async function(message) {
-    if (!servers[message.guild.id]) servers[message.guild.id] = {
-        queue: []
-    }
-    songname = "https://www.youtube.com/watch?v=da7rZNK4SM0&has_verified=1";
-    var server = await servers[message.guild.id];
-    if (!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
-        if (message.guild.voice.connection.dispatcher) {
-            server.queue.push(songname);
-            message.channel.send('Queued ' + songname);
-            console.log(server);
-        } else {
-            server.queue = [];
-            server.queue.push(songname);
-            message.channel.send('playing ' + server.queue[0]);
-            play(connection, message);
-            console.log(server);
-        }
-    })
-}
 module.exports.info = async function(message, songname) {
-    if (songname) {
-        var video = await search.getVideo(songname).catch(console.error);
+  let video = null;
+  if (songname) {
+        video = await search.getVideo(songname).catch(console.error);
         if(!video){
             message.channel.send(`Item not found!`);
             return 1;
         }
     } else {
         if (currentlyPlaying !== null) {
-            var video = await search.getVideo(currentlyPlaying).catch(console.error);
+            video = await search.getVideo(currentlyPlaying).catch(console.error);
             if(!video){
                 message.channel.send(`Item not found!`);
                 return 1;
@@ -271,7 +252,7 @@ module.exports.kharej = async function(message, x) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
-    var server = servers[message.guild.id];
+    let server = servers[message.guild.id];
     if (x.toLowerCase() === 'all') {
         server.queue = [];
         return;
@@ -286,38 +267,32 @@ module.exports.queue = async function(message) {
     if (!servers[message.guild.id]) servers[message.guild.id] = {
         queue: []
     }
-    var server = servers[message.guild.id];
+    let server = servers[message.guild.id];
     if (!server.queue[0]) {
         message.channel.send("mafamach queue");
         return;
     }
 
-    // server.queue.forEach(async element => {
-    //     let video = await search.getVideo(element)
-    //     message.channel.send(i+1 + " " + video.title);
-    //     i++;
-    // });
-
-    var promise = new Promise(async(resolve, reject) => {
-        var msg = 'a'
-        for (var i = 0; i < server.queue.length; i++) {
-            let video = await search.getVideo(server.queue[i])
+    let promise = new Promise((resolve) => {
+        let msg = 'a'
+        for (let i = 0; i < server.queue.length; i++) {
+          search.getVideo(server.queue[i]).then(video =>{
             msg += video.title + '\n';
-        }
-        if (i == server.queue.length)
-            resolve(msg);
-    })
+          })
 
-    promise.then(res => {
-        if (res.length < 2000) {
-            message.channel.send(res);
-        } else {
-            server.queue.forEach(async element => {
-                let video = await search.getVideo(element)
-                message.channel.send(video.title);
-
-            });
+          resolve(msg);
         }
     })
 
+     promise.then(res => {
+         if (res.length < 2000) {
+             message.channel.send(res);
+         } else {
+             server.queue.forEach(async element => {
+                 let video = await search.getVideo(element)
+                 message.channel.send(video.title);
+
+             });
+         }
+     })
 }
