@@ -44,7 +44,7 @@ async function searchsongurl2(message, x) {
 
 function play(connection, message) {
     let server = servers[message.guild.id];
-    let dispatcher = connection.play(ytdl(server.queue[0], { quality: "highestaudio" }));
+    dispatcher = connection.play(ytdl(server.queue[0], { quality: "highestaudio" }));
     currentlyPlaying = server.queue.shift();
     console.log(server);
     dispatcher.on("finish", () => {
@@ -274,7 +274,7 @@ module.exports.queue = async function(message) {
     }
 
     let promise = new Promise((resolve) => {
-        let msg = 'a'
+        let msg = ''
         for (let i = 0; i < server.queue.length; i++) {
           search.getVideo(server.queue[i]).then(video =>{
             msg += video.title + '\n';
