@@ -4,6 +4,10 @@ const search = new YouTube(process.env.apiKey);
 let servers = {};
 let currentlyPlaying = null;
 let dispatcher = null;
+
+function test (){
+}
+
 async function playing(message, x) {
     let video = await search.getVideo(x).catch(console.error);
     if(!video){
