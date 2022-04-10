@@ -10,7 +10,7 @@ app.listen(process.env.PORT, ()=>{
     console.log("listening")
 })
 
-app.get('/73c8c6d74f4ab58d9646d6dc907cc3a5.html', (res, req) => {
+app.get('/73c8c6d74f4ab58d9646d6dc907cc3a5.html', (req, res) => {
     res.sendFile('/73c8c6d74f4ab58d9646d6dc907cc3a5.html', { root: __dirname})
 })
     
