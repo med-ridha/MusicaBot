@@ -2,6 +2,13 @@ const Discord = require('discord.js');
 const playsong = require("./commands/songcommands.js");
 const bot = new Discord.Client();
 const prefix = "+";
+const express = require("express")
+
+let app = express()
+
+app.listen(80, ()=>{
+    console.log("listening")
+})
 
 bot.login(process.env.token);
 
