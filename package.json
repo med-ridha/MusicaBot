@@ -15,7 +15,7 @@
         "discord.js": "^12.5.1",
         "express": "^4.17.3",
         "ffmpeg-static": "^4.2.8",
-        "moment": "^2.29.2",
+        "moment": "^2.29.4",
         "mongodb": "^3.6.5",
         "node-fetch": "^3.1.1",
         "node-pre-gyp": "^0.16.0",
