@@ -277,26 +277,5 @@ module.exports.queue = async function(message) {
         return;
     }
 
-    let promise = new Promise((resolve) => {
-        let msg = ''
-        for (let i = 0; i < server.queue.length; i++) {
-          search.getVideo(server.queue[i]).then(video =>{
-            msg += video.title + '\n';
-          })
-          if (i === server.queue.length)
-          resolve(msg);
-        }
-    })
-
-     promise.then(res => {
-         if (res.length < 2000) {
-             message.channel.send(res);
-         } else {
-             server.queue.forEach(async element => {
-                 let video = await search.getVideo(element)
-                 message.channel.send(video.title);
-
-             });
-         }
-     })
+    //TODO: rewrite the queue command
 }
