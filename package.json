@@ -1,33 +1,27 @@
 {
-    "name": "discordbot3",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Ridha",
-    "license": "ISC",
-    "node_version": "14.0.0",
-    "dependencies": {
-        "@discordjs/opus": "^0.8.0",
-        "discord.js": "^12.5.1",
-        "express": "^4.17.3",
-        "ffmpeg-static": "^4.2.8",
-        "moment": "^2.29.4",
-        "mongodb": "^3.6.5",
-        "node-fetch": "^3.1.1",
-        "node-pre-gyp": "^0.16.0",
-        "popyt": "^4.2.0",
-        "solenolyrics": "^5.0.0",
-        "tmi.js": "^1.7.5",
-        "ytdl-core": "^4.5.0"
-    },
-    "engines": {
-        "node": ">=12.12"
-    },
-    "devDependencies": {
-        "eslint": "^7.31.0"
-    }
+  "name": "musicabot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsc && node dist/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.9.0",
+    "@discordjs/voice": "^0.16.0",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
+    "ffmpeg-static": "^5.2.0",
+    "popyt": "^7.1.1",
+    "sodium-native": "^4.0.4",
+    "youtube-dl-exec": "^2.4.13",
+    "ytdl-core": "^4.11.5"
+  }
 }
