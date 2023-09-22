@@ -1,11 +1,7 @@
 require('dotenv').config();
 import {
     joinVoiceChannel,
-    createAudioPlayer,
-    createAudioResource,
     entersState,
-    StreamType,
-    AudioPlayerStatus,
     VoiceConnectionStatus,
     VoiceConnection,
 } from '@discordjs/voice';
@@ -13,7 +9,6 @@ import { Client, VoiceBasedChannel, GatewayIntentBits } from 'discord.js';
 import { createDiscordJSAdapter } from './adapter';
 import { play, stop } from './commands/music'
 
-//const { token } = require('../config.json') as { token: string };
 const token = process.env.DiscordAPIKEY;
 
 let prefix = '+';
