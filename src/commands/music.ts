@@ -1,138 +1,45 @@
-import {
-    AudioPlayer,
-    AudioPlayerStatus,
-    StreamType,
-    VoiceConnection,
-    createAudioResource,
-    entersState
-} from "@discordjs/voice";
 import { Message } from "discord.js";
 
 import { YouTube } from 'popyt';
-import ytdl from "ytdl-core";
+import { MusicClass } from './MusicClass'
 const search = new YouTube(process.env.YoutubeAPIKEY);
-const player = new AudioPlayer();
+let servers: Record<string, MusicClass | null> = {};
 
-let servers = {};
-let currentlyPlaying: any = null;
+export async function play(message: Message, songname: string): Promise<Number> {
+    if (!servers[message.guild!.id]) servers[message.guild!.id] = new MusicClass();
+    let client = servers[message.guild!.id];
 
-async function playing(message: Message, x: string) {
-    let video = await search.getVideo(x).catch(console.error);
-    if (!video) {
-        return 1;
-    }
-    message.reply(`Playing: ${video.title}`);
-}
-function prepareSong(songURL: string) {
-    const resource = createAudioResource(
-        ytdl(
-            songURL,
-            {
-                filter: "audioonly",
-                quality: "lowestaudio"
-            }
-        ), {
-        inputType: StreamType.Arbitrary,
-    });
-    player.play(resource);
-
-
-    return entersState(player, AudioPlayerStatus.Playing, 50000);
-}
-
-function playSong(connection: VoiceConnection, message: Message) {
-    //@ts-expect-error
-    let server: any = servers[message.guild!.id];
-    prepareSong(server.queue[0]);
-    connection.subscribe(player);
-    currentlyPlaying = server.queue.shift();
-    console.log(server);
-    const callback = () => {
-        if (player.state.status === AudioPlayerStatus.Idle) {
-            if (server.queue[0]) {
-                playing(message, server.queue[0]);
-                playSong(connection, message);
-                player.removeListener('stateChange', callback);
-            } else {
-                currentlyPlaying = null;
-                message.reply('ma3adach fama songs fil queue, Hani 5arej');
-                player.removeListener('stateChange', callback);
-                try {
-                    player.stop();
-                    connection.destroy()
-
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        }
-    }
-    player.on('stateChange', callback);
-}
-
-async function playSongFromName(connection: VoiceConnection, message: Message, songname: string) {
-    //@ts-ignore
-    let server = servers[message.guild!.id];
-    let r = await search.getVideo(songname).catch(console.error);
-    if (!r) {
-        message.reply(`Item not found try different input`);
-        return 1;
-    }
-    if (player.state.status === AudioPlayerStatus.Playing) {
-        server.queue.push(r.url);
-        Queued(message, r.url);
-        console.log(server);
-    } else {
-        server.queue = [];
-        server.queue.push(r.url);
-        playing(message, r.url)
-        playSong(connection, message);
-    }
-}
-
-async function Queued(message: Message, x: string) {
-    let video = await search.getVideo(x).catch(console.error);
-    if (!video) {
-        return 1;
-    }
-    message.reply(`Queued: ${video.title}`);
-}
-export async function play(connection: VoiceConnection, message: Message, songname: string) {
-    //@ts-expect-error
-    if (!servers[message.guild!.id]) servers[message.guild!.id] = {
-        queue: []
-    }
-    //@ts-expect-error
-    let server = servers[message.guild!.id];
     if (songname.includes("https://www.youtube.com/")) {
         if (songname.includes("list")) {
             //getPlaylist(message, songname);
         } else {
-            if (player.state.status === AudioPlayerStatus.Playing) {
-                server.queue.push(songname);
-                Queued(message, songname);
-            } else {
-                server.queue = [];
-                server.queue.push(songname);
-                playing(message, server.queue[0]);
-                playSong(connection, message);
-            }
+
         }
     } else {
-        playSongFromName(connection, message, songname);
+        let song = await search.getVideo(songname).catch(error => console.error(error));
+        if (!song) {
+            message.reply("Ma9itech el song eli t7eb 3liha")
+            return 1;
+        }
+        client!.play(message, song)
     }
 
+    
     return 0;
 }
 
-export async function stop(connection: VoiceConnection) {
+export async function stop( message: Message) {
+    if (!servers[message.guild!.id]) {
+        return;
+    }
     try {
-        connection.destroy();
-        player.stop();
+        servers[message.guild!.id]!.stop();
+        delete servers[message.guild!.id];
     } catch (error) {
         console.error(error);
     }
 }
+
 /* async function Queued(message : Message, x: string) {
     let video = await search.getVideo(x).catch(console.error);
     if(!video){
