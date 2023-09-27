@@ -57,7 +57,11 @@ export class MusicClass {
             ), {
             inputType: StreamType.Arbitrary,
         });
-        this.player.play(resource);
+        try {
+            this.player.play(resource);
+        } catch (error) {
+            console.error(error)
+        }
 
 
         return entersState(this.player, AudioPlayerStatus.Playing, 50000);
@@ -116,11 +120,32 @@ export class MusicClass {
     }
     stop() {
         try {
-            this.player.removeAllListeners();
             this.player.stop();
             this.connection!.destroy();
 
         }catch (error) {
+            console.error(error);
+        }
+    }
+    skip() {
+        try {
+            return this.player.stop(true);
+        }catch (error) {
+            console.log(error);
+        }
+
+    }
+    resume() {
+        try {
+            return this.player.unpause();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    pause() {
+        try {
+            return this.player.pause(true);
+        } catch (error) {
             console.error(error);
         }
     }

@@ -1,10 +1,10 @@
 require('dotenv').config();
-import { Client, GatewayIntentBits } from 'discord.js';
-import { play, stop } from './commands/music'
+import { Client, GatewayIntentBits, Message } from 'discord.js';
+import { handleCommands } from './lib/commands'
 
 const token = process.env.DiscordAPIKEY;
 
-let prefix = '+';
+const prefix = '+';
 
 const client = new Client({
     intents: [
@@ -21,44 +21,15 @@ client.on('ready', async () => {
 
 });
 
-client.on('messageCreate', async (message) => {
+client.on('messageCreate', async (message: Message) => {
     if (!message.guild) return;
 
     const channel = message.member?.voice.channel;
     let content = message.content;
     if (content.substring(0, 1) === prefix) {
-        content = content.substring(1,);
-        let args = content.split(" ");
-        let command = args.shift();
-        let songname = args.join(" ");
-
-        switch (command) {
-            case "7ot":
-                if (channel) {
-                    try {
-                        play(message, songname)
-                    } catch (error) {
-                        console.error(error);
-                    }
-                } else {
-                    message.reply('Join a voice channel then try again!');
-                }
-                break;
-            case "o5rej":
-                if (channel) {
-                    try {
-                        stop(message);
-                    } catch (error) {
-                        console.error(error)
-                    }
-
-                } else {
-                    message.reply('od5el lel voice w 3awed jareb')
-                }
-
-        }
-
+        handleCommands(message, content, channel!);
     }
+    return;
 });
 
 void client.login(token);

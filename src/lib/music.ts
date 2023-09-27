@@ -7,6 +7,7 @@ let servers: Record<string, MusicClass | null> = {};
 
 export async function play(message: Message, songname: string): Promise<Number> {
     if (!servers[message.guild!.id]) servers[message.guild!.id] = new MusicClass();
+    console.log(servers);
     let client = servers[message.guild!.id];
 
     if (songname.includes("https://www.youtube.com/")) {
@@ -24,11 +25,11 @@ export async function play(message: Message, songname: string): Promise<Number> 
         client!.play(message, song)
     }
 
-    
+
     return 0;
 }
 
-export async function stop( message: Message) {
+export async function stop(message: Message) {
     if (!servers[message.guild!.id]) {
         return;
     }
@@ -40,6 +41,37 @@ export async function stop( message: Message) {
     }
 }
 
+export function skip(message: Message) {
+    if (!servers[message.guild!.id]) {
+        return;
+    }
+    try {
+        servers[message.guild!.id]!.skip();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export function resume(message: Message) {
+    if (!servers[message.guild!.id]) {
+        return;
+    }
+    try {
+        servers[message.guild!.id]!.resume();
+    } catch (error) {
+        console.error(error);
+    }
+}
+export function pause(message: Message) {
+    if (!servers[message.guild!.id]) {
+        return;
+    }
+    try {
+        servers[message.guild!.id]!.pause();
+    } catch (error) {
+        console.error(error);
+    }
+}
 /* async function Queued(message : Message, x: string) {
     let video = await search.getVideo(x).catch(console.error);
     if(!video){
