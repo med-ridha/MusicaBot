@@ -41,7 +41,7 @@ export class MusicClass {
         }
     }
 
-    async connect(message: Message){
+    async connect(message: Message) {
         this.connection = await this.connectToChannel(message.member?.voice.channel!);
         this.connection!.subscribe(this.player);
     }
@@ -66,12 +66,13 @@ export class MusicClass {
 
         return entersState(this.player, AudioPlayerStatus.Playing, 50000);
     }
-    Queued(message: Message, song: Video): Promise<Message<boolean>> {
-        return message.reply(`Queued: ${song.title}`);
-
+    async Queued(message: Message, song: Video): Promise<void | Message<boolean>> {
+        return message.reply(`Queued: ${song.title}`)
+            .catch((error) => {message.channel.send(`ya ltif ${error}`)});
     }
-    playing(message: Message, song: Video): Promise<Message<boolean>> {
-        return message.reply(`Playing: ${song.title}`);
+    async playing(message: Message, song: Video): Promise<void | Message<boolean>> {
+        return message.reply(`Playing: ${song.title}`)
+            .catch(error => {message.channel.send(`ya ltif ${error}`)});
     }
     printQueue() {
         this.queue.map(song => console.log(`URL: ${song.url}, TITLE: ${song.title}`));
@@ -88,7 +89,7 @@ export class MusicClass {
                     this.playSong(message);
                     this.player.removeListener('stateChange', callback);
                 } else {
-                    message.reply('ma3adach fama songs fil queue, Hani 5arej');
+                    message.reply('ma3adach fama songs fil queue, Hani 5arej').catch(error => {message.channel.send(`ya ltif ${error}`)});
                     this.player.removeListener('stateChange', callback);
                     try {
                         this.player.stop();
@@ -103,7 +104,7 @@ export class MusicClass {
         return this.player.on('stateChange', callback);
     }
     play(message: Message, song: Video): Number | AudioPlayer {
-        if (this.connection?.state.status !== VoiceConnectionStatus.Ready){
+        if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
             this.connect(message);
         }
         if (this.player.state.status === AudioPlayerStatus.Playing) {
@@ -123,14 +124,14 @@ export class MusicClass {
             this.player.stop();
             this.connection!.destroy();
 
-        }catch (error) {
+        } catch (error) {
             console.error(error);
         }
     }
     skip() {
         try {
             return this.player.stop(true);
-        }catch (error) {
+        } catch (error) {
             console.log(error);
         }
 
