@@ -68,11 +68,11 @@ export class MusicClass {
     }
     async Queued(message: Message, song: Video): Promise<void | Message<boolean>> {
         return message.reply(`Queued: ${song.title}`)
-            .catch((error) => {message.channel.send(`ya ltif ${error}`)});
+            .catch((error) => {console.error(`ya ltif ${error}`)});
     }
     async playing(message: Message, song: Video): Promise<void | Message<boolean>> {
         return message.reply(`Playing: ${song.title}`)
-            .catch(error => {message.channel.send(`ya ltif ${error}`)});
+            .catch(error => {console.error(`ya ltif ${error}`)});
     }
     printQueue() {
         this.queue.map(song => console.log(`URL: ${song.url}, TITLE: ${song.title}`));
@@ -89,7 +89,7 @@ export class MusicClass {
                     this.playSong(message);
                     this.player.removeListener('stateChange', callback);
                 } else {
-                    message.reply('ma3adach fama songs fil queue, Hani 5arej').catch(error => {message.channel.send(`ya ltif ${error}`)});
+                    message.reply('ma3adach fama songs fil queue, Hani 5arej').catch(error => {console.error(`ya ltif ${error}`)});
                     this.player.removeListener('stateChange', callback);
                     try {
                         this.player.stop();
