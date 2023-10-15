@@ -81,7 +81,7 @@ export class MusicClass {
     printQueue() {
         this.queue.map(song => console.log(`URL: ${song.url}, TITLE: ${song.title}`));
     }
-    async playSong(message: Message): Promise<AudioPlayer> {
+    async playSong(message: Message, servers: any): Promise<AudioPlayer> {
         if (this.currentPlayingMessage != null) {
             await this.currentPlayingMessage.delete();
         };
@@ -100,7 +100,7 @@ export class MusicClass {
                         this.messageQueue[0].delete();
                     }
                     this.currentPlayingMessage = await this.playing(message, this.queue[0]) || null;
-                    this.playSong(message);
+                    this.playSong(message, servers);
                     this.player.removeListener('stateChange', callback);
                 } else {
                     message.reply('ma3adach fama songs fil queue, Hani 5arej').catch(error => { console.error(`ya ltif ${error}`) });
@@ -108,7 +108,8 @@ export class MusicClass {
                     try {
                         this.player.stop();
                         this.connection!.destroy()
-
+                        servers[message.guild!.id] = null;
+                        
                     } catch (error) {
                         console.error(error);
                     }
@@ -117,7 +118,7 @@ export class MusicClass {
         }
         return this.player.on('stateChange', callback);
     }
-    async play(message: Message, song: Video): Promise<Number | Promise<AudioPlayer>> {
+    async play(message: Message, song: Video, servers: any): Promise<Number | Promise<AudioPlayer>> {
         if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
             this.connect(message);
         }
@@ -133,11 +134,11 @@ export class MusicClass {
         } else {
             this.queue = [];
             this.queue.push(song);
-            return this.playSong(message);
+            return this.playSong(message, servers);
         }
     }
 
-    playList(message: Message, videos: PaginatedResponse<Video>): Number | Promise<AudioPlayer> {
+    playList(message: Message, videos: PaginatedResponse<Video>, servers: any): Number | Promise<AudioPlayer> {
         if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
             this.connect(message);
         }
@@ -148,7 +149,7 @@ export class MusicClass {
         }
         else {
             this.playing(message, this.queue[0]);
-            return this.playSong(message);
+            return this.playSong(message, servers);
         }
 
     }
