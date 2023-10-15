@@ -1,21 +1,22 @@
 import { Message } from "discord.js";
 
-import { YouTube } from 'popyt';
+import { Playlist, YouTube } from 'popyt';
 import { MusicClass } from './MusicClass'
 const search = new YouTube(process.env.YoutubeAPIKEY);
 let servers: Record<string, MusicClass | null> = {};
 
 export async function play(message: Message, songname: string): Promise<Number> {
     if (!servers[message.guild!.id]) servers[message.guild!.id] = new MusicClass();
-    console.log(servers);
     let client = servers[message.guild!.id];
 
-    if (songname.includes("https://www.youtube.com/")) {
-        if (songname.includes("list")) {
-            //getPlaylist(message, songname);
-        } else {
-
+    if (songname.includes("https://www.youtube.com/") && songname.includes("list")) {
+        let playlist = await search.getPlaylist(songname).catch(error => console.error(error))
+        if (!playlist) {
+            message.reply("Ma9itech el playlist eli t7eb 3liha")
+            return 1;
         }
+        await playlist.fetchVideos({maxPerPage: 50})
+        client!.playList(message, playlist.videos);
     } else {
         let song = await search.getVideo(songname).catch(error => console.error(error));
         if (!song) {
@@ -24,7 +25,6 @@ export async function play(message: Message, songname: string): Promise<Number> 
         }
         client!.play(message, song)
     }
-
 
     return 0;
 }
@@ -41,12 +41,12 @@ export async function stop(message: Message) {
     }
 }
 
-export function skip(message: Message) {
+export function skip(message: Message, skipAmount?: number) {
     if (!servers[message.guild!.id]) {
         return;
     }
     try {
-        servers[message.guild!.id]!.skip();
+        servers[message.guild!.id]!.skip(skipAmount);
     } catch (error) {
         console.error(error);
     }

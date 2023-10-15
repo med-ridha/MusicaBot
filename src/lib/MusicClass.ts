@@ -9,7 +9,7 @@ import {
     joinVoiceChannel
 } from "@discordjs/voice";
 import { Message, VoiceBasedChannel } from "discord.js";
-import { Video } from "popyt";
+import { PaginatedResponse, Video } from "popyt";
 import { createDiscordJSAdapter } from '../adapter';
 
 import ytdl from "ytdl-core";
@@ -80,7 +80,6 @@ export class MusicClass {
     playSong(message: Message): AudioPlayer {
         this.prepareSong(this.queue[0].url);
         this.currentlyPlaying = this.queue[0];
-        this.printQueue();
         this.queue.shift();
         const callback = () => {
             if (this.player.state.status === AudioPlayerStatus.Idle) {
@@ -109,16 +108,32 @@ export class MusicClass {
         }
         if (this.player.state.status === AudioPlayerStatus.Playing) {
             this.queue.push(song);
-            this.printQueue();
             this.Queued(message, song);
             return 0;
         } else {
             this.queue = [];
             this.queue.push(song);
-            this.playing(message, song);
+            this.playing(message, this.queue[0]);
             return this.playSong(message);
         }
     }
+
+    playList(message: Message, videos: PaginatedResponse<Video>): Number | AudioPlayer {
+        if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
+            this.connect(message);
+        }
+        videos.items.map(video => this.queue.push(video))
+        if (this.player.state.status === AudioPlayerStatus.Playing){
+            message.reply(`Queued Playlist`);
+            return 0;
+        }
+        else {
+            this.playing(message, this.queue[0]);
+            return this.playSong(message);
+        }
+
+    }
+
     stop() {
         try {
             this.player.stop();
@@ -128,11 +143,14 @@ export class MusicClass {
             console.error(error);
         }
     }
-    skip() {
+    skip(skipAmount?: number) {
         try {
+            if (skipAmount) {
+                this.queue.splice(0, skipAmount);
+            }
             return this.player.stop(true);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
 
     }

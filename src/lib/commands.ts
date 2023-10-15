@@ -36,9 +36,9 @@ export function handleCommands(message: Message, content: string, channel: Voice
                 return;
             }
             try {
-                skip(message);
+                skip(message, args[0] as unknown as number);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
             break;
         case "a9ef":
@@ -49,7 +49,7 @@ export function handleCommands(message: Message, content: string, channel: Voice
             try {
                 pause(message);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
             break;
         case "kamel":
@@ -60,7 +60,7 @@ export function handleCommands(message: Message, content: string, channel: Voice
             try {
                 resume(message);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
             break;
     }
