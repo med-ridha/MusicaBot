@@ -19,11 +19,15 @@ export class MusicClass {
     queue: Video[];
     currentlyPlaying: Video | null;
     connection: VoiceConnection | null;
+    currentPlayingMessage: Message | null;
+    messageQueue: Message[];
     constructor() {
         this.player = new AudioPlayer;
         this.queue = [];
         this.currentlyPlaying = null;
         this.connection = null;
+        this.currentPlayingMessage = null;
+        this.messageQueue = [];
     }
     async connectToChannel(channel: VoiceBasedChannel) {
         const connection = joinVoiceChannel({
@@ -68,27 +72,38 @@ export class MusicClass {
     }
     async Queued(message: Message, song: Video): Promise<void | Message<boolean>> {
         return message.reply(`Queued: ${song.title}`)
-            .catch((error) => {console.error(`ya ltif ${error}`)});
+            .catch((error) => { console.error(`ya ltif ${error}`) });
     }
     async playing(message: Message, song: Video): Promise<void | Message<boolean>> {
         return message.reply(`Playing: ${song.title}`)
-            .catch(error => {console.error(`ya ltif ${error}`)});
+            .catch(error => { console.error(`ya ltif ${error}`) });
     }
     printQueue() {
         this.queue.map(song => console.log(`URL: ${song.url}, TITLE: ${song.title}`));
     }
-    playSong(message: Message): AudioPlayer {
+    async playSong(message: Message): Promise<AudioPlayer> {
+        if (this.currentPlayingMessage != null) {
+            await this.currentPlayingMessage.delete();
+        };
         this.prepareSong(this.queue[0].url);
         this.currentlyPlaying = this.queue[0];
+        this.currentPlayingMessage = await this.playing(message, this.queue[0]) || null;
         this.queue.shift();
-        const callback = () => {
+        const callback = async () => {
             if (this.player.state.status === AudioPlayerStatus.Idle) {
+                if (this.currentPlayingMessage != null) {
+                    await this.currentPlayingMessage.delete();
+                };
                 if (this.queue[0]) {
-                    this.playing(message, this.queue[0]);
+                    this.currentlyPlaying = this.queue[0];
+                    if (this.messageQueue[0]) {
+                        this.messageQueue[0].delete();
+                    }
+                    this.currentPlayingMessage = await this.playing(message, this.queue[0]) || null;
                     this.playSong(message);
                     this.player.removeListener('stateChange', callback);
                 } else {
-                    message.reply('ma3adach fama songs fil queue, Hani 5arej').catch(error => {console.error(`ya ltif ${error}`)});
+                    message.reply('ma3adach fama songs fil queue, Hani 5arej').catch(error => { console.error(`ya ltif ${error}`) });
                     this.player.removeListener('stateChange', callback);
                     try {
                         this.player.stop();
@@ -102,28 +117,32 @@ export class MusicClass {
         }
         return this.player.on('stateChange', callback);
     }
-    play(message: Message, song: Video): Number | AudioPlayer {
+    async play(message: Message, song: Video): Promise<Number | Promise<AudioPlayer>> {
         if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
             this.connect(message);
         }
         if (this.player.state.status === AudioPlayerStatus.Playing) {
             this.queue.push(song);
-            this.Queued(message, song);
+            let temp = await this.Queued(message, song);
+            if (temp == null) {
+                console.error("something went wrong");
+            } else {
+                this.messageQueue.push(temp);
+            }
             return 0;
         } else {
             this.queue = [];
             this.queue.push(song);
-            this.playing(message, this.queue[0]);
             return this.playSong(message);
         }
     }
 
-    playList(message: Message, videos: PaginatedResponse<Video>): Number | AudioPlayer {
+    playList(message: Message, videos: PaginatedResponse<Video>): Number | Promise<AudioPlayer> {
         if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
             this.connect(message);
         }
         videos.items.map(video => this.queue.push(video))
-        if (this.player.state.status === AudioPlayerStatus.Playing){
+        if (this.player.state.status === AudioPlayerStatus.Playing) {
             message.reply(`Queued Playlist`);
             return 0;
         }
