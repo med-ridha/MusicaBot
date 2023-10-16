@@ -83,7 +83,12 @@ export class MusicClass {
     }
     async playSong(message: Message, servers: any): Promise<AudioPlayer> {
         if (this.currentPlayingMessage != null) {
-            await this.currentPlayingMessage.delete();
+            try {
+                await this.currentPlayingMessage.delete();
+            } catch (error) {
+                console.error(error);
+            }
+
         };
         this.prepareSong(this.queue[0].url);
         this.currentlyPlaying = this.queue[0];
@@ -92,13 +97,21 @@ export class MusicClass {
         const callback = async () => {
             if (this.player.state.status === AudioPlayerStatus.Idle) {
                 if (this.currentPlayingMessage != null) {
-                    await this.currentPlayingMessage.delete();
+                    try {
+                        await this.currentPlayingMessage.delete();
+                    } catch (error) {
+                        console.error(error);
+                    }
                 };
                 if (this.queue[0]) {
                     this.currentlyPlaying = this.queue[0];
                     if (this.messageQueue[0]) {
-                        this.messageQueue[0].delete();
-                        this.messageQueue.shift();
+                        try {
+                            await this.messageQueue[0].delete();
+                            this.messageQueue.shift();
+                        } catch (error) {
+                            console.error(error);
+                        }
                     }
                     this.currentPlayingMessage = await this.playing(message, this.queue[0]) || null;
                     this.playSong(message, servers);
@@ -110,7 +123,7 @@ export class MusicClass {
                         this.player.stop();
                         this.connection!.destroy()
                         servers[message.guild!.id] = null;
-                        
+
                     } catch (error) {
                         console.error(error);
                     }
