@@ -22,6 +22,7 @@
     "popyt": "^7.1.1",
     "sodium-native": "^4.0.4",
     "youtube-dl-exec": "^2.4.13",
+    "yt-dlp-wrap": "^2.3.12",
     "ytdl-core": "^4.11.5"
   }
 }

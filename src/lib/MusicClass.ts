@@ -98,6 +98,7 @@ export class MusicClass {
                     this.currentlyPlaying = this.queue[0];
                     if (this.messageQueue[0]) {
                         this.messageQueue[0].delete();
+                        this.messageQueue.shift();
                     }
                     this.currentPlayingMessage = await this.playing(message, this.queue[0]) || null;
                     this.playSong(message, servers);
