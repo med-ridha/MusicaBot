@@ -1,5 +1,5 @@
 import { Message, VoiceBasedChannel } from "discord.js";
-import { play, stop, skip, resume, pause } from "./music";
+import { play, stop, skip, resume, pause  } from "./music";
 
 export function handleCommands(message: Message, content: string, channel: VoiceBasedChannel) {
     content = content.substring(1,);

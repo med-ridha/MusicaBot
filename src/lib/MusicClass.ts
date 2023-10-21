@@ -11,6 +11,7 @@ import {
 import { Message, VoiceBasedChannel } from "discord.js";
 import { PaginatedResponse, Video } from "popyt";
 import { createDiscordJSAdapter } from '../adapter';
+import fs from 'fs'
 
 import ytdl from "ytdl-core";
 
@@ -51,24 +52,29 @@ export class MusicClass {
     }
 
     async prepareSong(songURL: string): Promise<AudioPlayer> {
-        const resource = createAudioResource(
+        try {
             ytdl(
                 songURL,
                 {
                     filter: "audioonly",
                     quality: "lowestaudio"
                 }
-            ), {
-            inputType: StreamType.Arbitrary,
-        });
-        try {
-            this.player.play(resource);
+            ).pipe(fs.createWriteStream('/tmp/song.mp3')).on('finish', () => {
+                const r = fs.createReadStream('/tmp/song.mp3')
+                const resource = createAudioResource(
+                    r, {
+                        inputType: StreamType.Arbitrary,
+                    });
+                    this.player.play(resource);
+            });
+
         } catch (error) {
             console.error(error)
         }
 
 
-        return entersState(this.player, AudioPlayerStatus.Playing, 50000);
+        let state = await entersState(this.player, AudioPlayerStatus.Playing, 50000).catch(error => console.error(error))
+        return state!;
     }
     async Queued(message: Message, song: Video): Promise<void | Message<boolean>> {
         return message.reply(`Queued: ${song.title}`)
@@ -90,7 +96,7 @@ export class MusicClass {
             }
 
         };
-        this.prepareSong(this.queue[0].url);
+        this.prepareSong(this.queue[0].url).catch(error => console.error(error));
         this.currentlyPlaying = this.queue[0];
         this.currentPlayingMessage = await this.playing(message, this.queue[0]) || null;
         this.queue.shift();
