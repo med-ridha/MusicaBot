@@ -57,7 +57,7 @@ export class MusicClass {
                 songURL,
                 {
                     filter: "audioonly",
-                    quality: "lowestaudio"
+                    quality: "highestaudio"
                 }
             ).pipe(fs.createWriteStream('/tmp/song.mp3')).on('finish', () => {
                 const r = fs.createReadStream('/tmp/song.mp3')
@@ -77,11 +77,11 @@ export class MusicClass {
         return state!;
     }
     async Queued(message: Message, song: Video): Promise<void | Message<boolean>> {
-        return message.reply(`Queued: ${song.title}`)
+        return message.reply(`Queued: ${song.url}`)
             .catch((error) => { console.error(`ya ltif ${error}`) });
     }
     async playing(message: Message, song: Video): Promise<void | Message<boolean>> {
-        return message.reply(`Playing: ${song.title}`)
+        return message.reply(`Playing: ${song.url}`)
             .catch(error => { console.error(`ya ltif ${error}`) });
     }
     printQueue() {
