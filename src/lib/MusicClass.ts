@@ -46,9 +46,14 @@ export class MusicClass {
         }
     }
 
-    async connect(message: Message) {
+    async connect(message: Message, servers: any) {
         this.connection = await this.connectToChannel(message.member?.voice.channel!);
         this.connection!.subscribe(this.player);
+        this.connection.on('stateChange', (state) => {
+            if (state.status === VoiceConnectionStatus.Disconnected) {
+                servers[message.guild!.id] = null;
+            }
+        })
     }
 
     async prepareSong(songURL: string): Promise<AudioPlayer> {
@@ -63,9 +68,9 @@ export class MusicClass {
                 const r = fs.createReadStream('/tmp/song.mp3')
                 const resource = createAudioResource(
                     r, {
-                        inputType: StreamType.Arbitrary,
-                    });
-                    this.player.play(resource);
+                    inputType: StreamType.Arbitrary,
+                });
+                this.player.play(resource);
             });
 
         } catch (error) {
@@ -140,7 +145,7 @@ export class MusicClass {
     }
     async play(message: Message, song: Video, servers: any): Promise<Number | Promise<AudioPlayer>> {
         if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
-            this.connect(message);
+            this.connect(message, servers);
         }
         if (this.player.state.status === AudioPlayerStatus.Playing) {
             this.queue.push(song);
@@ -160,7 +165,7 @@ export class MusicClass {
 
     playList(message: Message, videos: PaginatedResponse<Video>, servers: any): Number | Promise<AudioPlayer> {
         if (this.connection?.state.status !== VoiceConnectionStatus.Ready) {
-            this.connect(message);
+            this.connect(message, servers);
         }
         videos.items.map(video => this.queue.push(video))
         if (this.player.state.status === AudioPlayerStatus.Playing) {
@@ -187,8 +192,11 @@ export class MusicClass {
         try {
             if (skipAmount) {
                 this.queue.splice(0, skipAmount);
+                let skipped = this.messageQueue.splice(0, skipAmount);
+                skipped.map(async x => await x.delete());
+            } else {
+                return this.player.stop(true);
             }
-            return this.player.stop(true);
         } catch (error) {
             console.error(error);
         }
