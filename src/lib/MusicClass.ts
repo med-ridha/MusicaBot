@@ -179,8 +179,15 @@ export class MusicClass {
 
     }
 
-    stop() {
+    async stop() {
         try {
+            if (this.currentPlayingMessage != null) {
+                try {
+                    await this.currentPlayingMessage.delete();
+                } catch (error) {
+                    console.error(error);
+                }
+            };
             this.player.stop();
             this.connection!.destroy();
 
