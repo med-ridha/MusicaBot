@@ -1,11 +1,12 @@
 import { Message, VoiceBasedChannel } from "discord.js";
-import { play, stop, skip, resume, pause  } from "./music";
+import { play, stop, skip, resume, pause } from "./music";
+import { scan, supportedLanguages } from "./ocr";
 
-export function handleCommands(message: Message, content: string, channel: VoiceBasedChannel) {
+export async function handleCommands(message: Message, content: string, channel: VoiceBasedChannel) {
     content = content.substring(1,);
     let args = content.split(" ");
     let command = args.shift();
-    let songname = args.join(" ");
+    content = args.join(" ");
 
     switch (command) {
         case "7ot":
@@ -14,7 +15,7 @@ export function handleCommands(message: Message, content: string, channel: Voice
                 return;
             }
             try {
-                play(message, songname)
+                play(message, content)
             } catch (error) {
                 console.error(error);
             }
@@ -63,5 +64,33 @@ export function handleCommands(message: Message, content: string, channel: Voice
                 console.error(error);
             }
             break;
+        case "scan":
+            if (message.attachments.size > 1) {
+                message.reply("one image at a time!");
+                return;
+            }
+            if (message.attachments.size < 1) {
+                message.reply("i require at least one image!");
+                return;
+            }
+            if (!args[0]) {
+                message.reply("no language detected, default English");
+            }
+            const image = message.attachments.first();
+            if (!image) return;
+            let lang = args[0] || "english";
+            const result = await scan(image, lang)
+            if (result == null) {
+                message.reply("something went wrong!!!");
+                return;
+            }
+            message.reply(result.data.text);
+            break;
+        case "lang":
+            const langs = supportedLanguages();
+            console.log(langs)
+            message.reply(langs);
+            break;
+
     }
 }
